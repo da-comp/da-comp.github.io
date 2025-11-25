@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="scroll-smooth">
 <head>
   <meta charset="utf-8">
   <meta name="description" content="DAComp: Benchmarking Data Agents across the Full Data Intelligence Lifecycle">
@@ -8,134 +8,108 @@
   <title>DAComp: Benchmarking Data Agents</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
   <style>
-    body { font-family: 'Noto Sans', sans-serif; background-color: #fbfbfb; }
+    /* --- Global & Utility --- */
+    body { font-family: 'Noto Sans', sans-serif; background-color: #fff; padding-top: 3.25rem; }
     .title { font-family: 'Google Sans', sans-serif; }
-    .publication-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .scroll-smooth { scroll-behavior: smooth; }
+    
+    /* --- Navbar --- */
+    .navbar { box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-bottom: 1px solid #eee; }
+    .navbar-brand { padding-left: 20px; align-items: center; display: flex; }
+    .navbar-logo-img { max-height: 2.0rem; border-radius: 50%; margin-right: 8px; }
+    .navbar-title { font-weight: 700; font-size: 1.3rem; color: #333; font-family: 'Google Sans', sans-serif; }
+    .navbar-menu { padding-right: 20px; }
+
+    /* --- Hero & Header --- */
+    .publication-title { font-size: 2.8rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
     .publication-authors { font-size: 1.25rem; color: #4a4a4a; }
-    .publication-venue { font-weight: bold; color: #333; margin-top: 10px; }
-    .button.is-dark { background-color: #363636; border-color: transparent; color: #fff; }
-    .button.is-dark:hover { background-color: #292929; }
+    .button.is-dark { background-color: #363636; border-color: transparent; color: #fff; transition: all 0.2s; }
+    .button.is-dark:hover { background-color: #292929; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+
+    /* --- Animations --- */
+    .animate-box { opacity: 0; transform: translateY(20px); transition: all 0.8s ease-out; }
+    .animate-box.is-visible { opacity: 1; transform: translateY(0); }
     
-    /* Advanced Leaderboard Styles */
-    .leaderboard-container { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 25px; }
+    /* Hover Effects */
+    .hover-shadow { transition: box-shadow 0.3s; }
+    .hover-shadow:hover { box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important; }
     
-    /* Tab Navigation */
+    .hover-scale { transition: transform 0.3s; display: block; }
+    .hover-scale:hover { transform: scale(1.02); }
+
+    /* --- Leaderboard --- */
+    .leaderboard-container { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 25px; transition: height 0.3s; }
     .tabs.is-toggle li.is-active a { background-color: #209cee; border-color: #209cee; color: #fff; }
-    .tabs.is-toggle.custom-tabs li.is-active#tab-overall a { background-color: #363636; border-color: #363636; } /* Dark for Overall */
-    .tabs.is-toggle.custom-tabs li.is-active#tab-de a { background-color: #d29400; border-color: #d29400; } /* Orange/Yellow for DE */
-    .tabs.is-toggle.custom-tabs li.is-active#tab-da a { background-color: #257953; border-color: #257953; } /* Green for DA */
-
-    /* Table Visibility Control */
-    .leaderboard-table-wrapper { display: none; animation: fadeIn 0.3s ease-in-out; }
-    .leaderboard-table-wrapper.is-active { display: block; }
-
-    /* Column Styling */
-    .table th { vertical-align: middle; font-size: 0.95rem; }
-    .score-col { font-weight: 700; color: #333; background-color: #f9fbfc; }
-    .sub-score-col { font-size: 0.9rem; color: #666; }
+    /* Custom colors for tabs */
+    .tabs.is-toggle.custom-tabs li.is-active#lb-tab-de a { background-color: #d29400; border-color: #d29400; } /* DE Orange */
+    .tabs.is-toggle.custom-tabs li.is-active#lb-tab-da a { background-color: #257953; border-color: #257953; } /* DA Green */
     
-    /* Rank Badges */
-    .rank-1 { background: #ffd700; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .table tr { transition: background-color 0.2s; }
+    .table tr:hover { background-color: #fcfcfc; }
+    .rank-1 { background: #ffd700; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     .rank-2 { background: #c0c0c0; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
     .rank-3 { background: #cd7f32; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
-    
-    /* Icons */
-    .icon-spacer { margin-right: 5px; opacity: 0.7; }
-    
-    /* Visualization Section */
-    .vis-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; }
-    .vis-caption { font-size: 0.9rem; color: #666; margin-top: 10px; font-style: italic; }
+    .score-col { font-weight: 700; color: #333; background-color: #f9fbfc; }
+    .sub-score-col { font-size: 0.9rem; color: #666; }
 
-    /* Case Study Styles */
-    .case-study-container { margin-top: 30px; }
+    /* --- Case Studies --- */
+    .case-study-container { margin-top: 30px; min-height: 400px; }
     
-    /* DE Video & Image Wrapper */
-    .de-showcase { display: flex; gap: 20px; flex-wrap: wrap; }
-    .de-video-box { flex: 1; min-width: 300px; background: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-    .de-image-box { flex: 1; min-width: 300px; display: flex; align-items: center; justify-content: center; background: #f5f5f5; border-radius: 8px; padding: 10px; }
-    
-    /* DA Report Simulation (Markdown Look) */
-    .da-input-card { background: #f8f9fa; border-left: 5px solid #3273dc; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
-    .da-report-paper { 
-      background: white; 
-      border: 1px solid #ddd; 
-      box-shadow: 0 0 15px rgba(0,0,0,0.05); 
-      padding: 40px; 
-      border-radius: 4px; 
-      font-family: 'Times New Roman', serif; /* 模拟正式报告字体 */
-      line-height: 1.6;
-      color: #2c3e50;
-    }
-    
-    /* Markdown Element Simulation */
-    .da-report-paper h1 { font-size: 1.8rem; font-weight: bold; color: #333; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-    .da-report-paper h2 { font-size: 1.4rem; font-weight: bold; color: #444; margin-top: 25px; margin-bottom: 10px; }
-    .da-report-paper p { margin-bottom: 15px; font-size: 1.1rem; }
-    .da-report-paper ul { list-style-type: disc; margin-left: 20px; margin-bottom: 15px; }
-    .da-report-paper img.report-chart { width: 100%; border: 1px solid #eee; border-radius: 4px; margin: 15px 0; }
-    .da-report-paper code { background-color: #f5f5f5; color: #d63384; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
-    
-    /* Toggle visibility */
-    .case-content { display: none; animation: fadeIn 0.5s; }
-    .case-content.is-active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    /* Sub-navigation Pills */
+    /* Sub-nav Pills */
     .sub-nav-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
     .sub-nav-btn { 
-      border: 1px solid #dbdbdb; 
-      background: white; 
-      color: #363636; 
-      padding: 8px 16px; 
-      border-radius: 20px; 
-      cursor: pointer; 
-      font-size: 0.9rem; 
-      transition: all 0.2s; 
-      display: flex; 
-      align-items: center; 
-      gap: 6px;
+      border: 1px solid #dbdbdb; background: white; color: #363636; padding: 8px 16px; 
+      border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
     }
-    .sub-nav-btn:hover { background: #f5f5f5; border-color: #b5b5b5; }
-    .sub-nav-btn.is-active { 
-      background: #3273dc; 
-      color: white; 
-      border-color: #3273dc; 
-      box-shadow: 0 2px 5px rgba(50, 115, 220, 0.3);
-    }
-    
-    /* Animation for sub-cases */
-    .sub-case-content { display: none; animation: fadeIn 0.3s; }
-    .sub-case-content.is-active { display: block; }
+    .sub-nav-btn:hover { background: #f5f5f5; border-color: #b5b5b5; transform: translateY(-1px); }
+    .sub-nav-btn.is-active { background: #3273dc; color: white; border-color: #3273dc; box-shadow: 0 4px 10px rgba(50, 115, 220, 0.3); }
 
-    /* Navbar Customization */
-    body { padding-top: 3.25rem; } /* 防止内容被导航栏遮挡 */
+    /* DE Showcase Layout */
+    .de-showcase { display: flex; gap: 20px; flex-wrap: wrap; }
+    .de-video-box { flex: 1; min-width: 300px; background: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .de-image-box { flex: 1; min-width: 300px; display: flex; align-items: center; justify-content: center; background: #f9f9f9; border-radius: 8px; padding: 10px; border: 1px solid #eee;}
+    .de-grid-images { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; } /* For multiple images */
+
+    /* DA Report Simulation */
+    .da-input-card { background: #f4f8fb; border-left: 5px solid #209cee; padding: 20px; margin-bottom: 25px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .da-report-paper { 
+      background: white; border: 1px solid #ddd; box-shadow: 0 5px 20px rgba(0,0,0,0.08); padding: 50px; 
+      border-radius: 4px; font-family: 'Times New Roman', serif; line-height: 1.7; color: #2c3e50;
+      position: relative;
+    }
+    /* Paper curl effect */
+    .da-report-paper::after {
+        content: ""; position: absolute; bottom: 15px; right: 10px; width: 50%; height: 20px; 
+        box-shadow: 0 15px 10px rgba(0, 0, 0, 0.1); transform: rotate(-3deg); z-index: -1;
+    }
+    .da-report-paper h1 { font-size: 2rem; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+    .da-report-paper h2 { font-size: 1.4rem; font-weight: bold; color: #444; margin-top: 30px; margin-bottom: 10px; border-left: 4px solid #333; padding-left: 10px; }
+    .report-chart { border: 1px solid #eee; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+    /* Utility: Hidden/Active Logic */
+    .leaderboard-table-wrapper, .case-content, .sub-case-content, .main-case-content { display: none; animation: fadeIn 0.4s ease-out; }
+    .leaderboard-table-wrapper.is-active, .case-content.is-active, .sub-case-content.is-active, .main-case-content.is-active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Mobile helper */
+    @media screen and (max-width: 768px) {
+      .is-mobile-reverse-stack { flex-direction: column; }
+      .de-grid-images { grid-template-columns: 1fr; } /* Stack images on mobile */
+    }
+
+    /* --- Custom Width --- */
+    /* 覆盖 Bulma 默认的 960px，改为 1200px 或更大 */
+    .container.is-wide { 
+      max-width: 1200px !important; 
+    }
     
-    .navbar { 
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
-      border-bottom: 1px solid #eee;
-    }
-    .navbar-brand {
-      padding-left: 20px; /* 左侧留白 */
-      align-items: center;
-      display: flex;
-    }
-    .navbar-logo-img {
-      max-height: 2.0rem; /* Logo 大小控制 */
-      border-radius: 50%;
-      margin-right: 8px;
-    }
-    .navbar-title {
-      font-weight: 700;
-      font-size: 1.3rem;
-      color: #333;
-      font-family: 'Google Sans', sans-serif;
-    }
-    .navbar-menu {
-      padding-right: 20px; /* 右侧留白 */
+    /* 针对超大屏幕，如果您想更宽，可以解开下面的注释 */
+    @media screen and (min-width: 1408px) {
+      .container.is-wide { max-width: 1344px !important; }
     }
   </style>
 </head>
@@ -144,32 +118,27 @@
 <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="#">
-      <img src="./images/dacomp_logo.png" class="navbar-logo-img" alt="DAComp Logo">
+      <img src="./images/dacomp_logo.png" class="navbar-logo-img" alt="DAComp">
       <span class="navbar-title">DAComp</span>
     </a>
-
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
     </a>
   </div>
-
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-end">
       <a class="navbar-item" href="#">Overview</a>
-      <a class="navbar-item" href="#case-studies">Case Studies</a> <a class="navbar-item" href="#leaderboard">Leaderboard</a> <a class="navbar-item" href="#analysis">Analysis</a>
+      <a class="navbar-item" href="#case-studies">Case Studies</a> 
+      <a class="navbar-item" href="#leaderboard">Leaderboard</a> 
+      <a class="navbar-item" href="#analysis">Analysis</a>
       <a class="navbar-item" href="#BibTeX">BibTeX</a>
-      
       <div class="navbar-item">
         <div class="buttons">
           <a class="button is-dark is-small is-rounded" href="https://github.com/anonymous/DAComp">
-            <span class="icon"><i class="fab fa-github"></i></span>
-            <span>Code</span>
+            <span class="icon"><i class="fab fa-github"></i></span><span>Code</span>
           </a>
           <a class="button is-dark is-small is-rounded" href="https://arxiv.org/abs/XXXX.XXXXX">
-            <span class="icon"><i class="fas fa-file-pdf"></i></span>
-            <span>Paper</span>
+            <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span>
           </a>
         </div>
       </div>
@@ -179,11 +148,11 @@
 
 <section class="hero">
   <div class="hero-body">
-    <div class="container is-max-desktop">
+    <div class="container is-max-desktop animate-box">
       <div class="columns is-centered">
         <div class="column has-text-centered">
           
-          <h1 class="title publication-title" style="margin-top: 20px;">
+          <h1 class="title publication-title" style="margin-bottom: 20px;">
             DAComp: Benchmarking Data Agents across the Full Data Intelligence Lifecycle
           </h1>
           
@@ -228,20 +197,17 @@
             <div class="publication-links">
               <span class="link-block">
                 <a href="https://arxiv.org/abs/XXXX.XXXXX" class="button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
-                  <span>Paper</span>
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span>
                 </a>
               </span>
               <span class="link-block">
                 <a href="https://github.com/anonymous/DAComp" class="button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="fab fa-github"></i></span>
-                  <span>Code</span>
+                  <span class="icon"><i class="fab fa-github"></i></span><span>Code</span>
                 </a>
               </span>
               <span class="link-block">
                 <a href="#" class="button is-normal is-rounded is-dark">
-                  <span class="icon"><i class="fas fa-database"></i></span>
-                  <span>Data</span>
+                  <span class="icon"><i class="fas fa-database"></i></span><span>Data</span>
                 </a>
               </span>
             </div>
@@ -253,57 +219,47 @@
   </div>
 </section>
 
-<section class="section">
-  <div class="container is-max-desktop">
+<section class="section hero is-light" id="overview">
+  <!-- <div class="container is-max-desktop animate-box"> -->
+  <div class="container is-wide animate-box">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <img src="./images/main.png" alt="DAComp Overview" style="width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-        <h2 class="subtitle has-text-centered" style="margin-top: 15px;">
-          DAComp evaluates agents on <b>Repository-level Data Engineering (DE)</b> and <b>Open-ended Data Analysis (DA)</b>.
-        </h2>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
+        <h2 class="title is-3">Overview</h2>
         <div class="content has-text-justified">
           <p>
-            Real-world enterprise data intelligence workflows encompass data engineering that turns raw sources into analytical-ready tables and data analysis that convert those tables into decision-oriented insights. We introduce <b>DAComp</b>, a benchmark of <b>236 tasks</b> that mirrors these complex workflows.
+            Real-world enterprise data intelligence workflows encompass <b>data engineering (DE)</b> that turns raw sources into analytical-ready tables and <b>data analysis (DA)</b> that converts those tables into decision-oriented insights. We introduce <b>DAComp</b>, a benchmark of <b>236 tasks</b> that mirrors these complex workflows.
           </p>
           <p>
             <b>Data Engineering (DE)</b> tasks require repository-level engineering on industrial schemas, including designing and building multi-stage SQL pipelines. <b>Data Analysis (DA)</b> tasks pose open-ended business problems that demand strategic planning and insight synthesis. Our experiments reveal that even state-of-the-art agents falter, with DE success rates under 20% and DA scores averaging below 40%.
           </p>
+        </div>
+        <div class="publication-banner hover-shadow" style="margin-top: 30px; border-radius: 8px; overflow: hidden;">
+          <figure class="image">
+            <img src="./images/main.png" alt="DAComp Overview">
+            <figcaption class="has-text-centered mt-3 is-size-6 has-text-grey p-2">
+              <b>Figure 1:</b> DAComp evaluates agents on Repository-level Data Engineering (DE) and Open-ended Data Analysis (DA).
+            </figcaption>
+          </figure>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section has-background-light">
-  <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">🧩 Case Studies: Hard & Soft Axes</h2>
-    <p class="subtitle has-text-centered is-size-6">
-      Explore multiple scenarios showing how agents handle repository-level engineering (DE) and open-ended analysis (DA).
+<section class="section" id="case-studies">
+  <div class="container is-max-desktop animate-box">
+    <h2 class="title is-3 has-text-centered">🧩 Case Studies</h2>
+    <p class="subtitle has-text-centered is-size-6 has-text-grey">
+      Explore how agents handle challenges across the Hard Axis (Engineering) and Soft Axis (Analysis).
     </p>
 
-    <div class="tabs is-centered is-boxed is-toggle is-toggle-rounded" style="margin-top: 20px;">
+    <div class="tabs is-centered is-boxed is-toggle is-toggle-rounded" style="margin-top: 30px;">
       <ul>
         <li class="is-active" onclick="switchMainCase('de-case')" id="tab-case-de">
-          <a>
-            <span class="icon"><i class="fas fa-cogs"></i></span>
-            <span><b>DE:</b> Repository Engineering</span>
-          </a>
+          <a><span class="icon"><i class="fas fa-cogs"></i></span><span><b>DE:</b> Repository Engineering</span></a>
         </li>
         <li onclick="switchMainCase('da-case')" id="tab-case-da">
-          <a>
-            <span class="icon"><i class="fas fa-chart-line"></i></span>
-            <span><b>DA:</b> Insight Report</span>
-          </a>
+          <a><span class="icon"><i class="fas fa-chart-line"></i></span><span><b>DA:</b> Insight Report</span></a>
         </li>
       </ul>
     </div>
@@ -311,348 +267,159 @@
     <div class="case-study-container">
       
       <div id="de-case" class="main-case-content is-active">
-        
         <div class="sub-nav-container">
           <button class="sub-nav-btn is-active" onclick="switchDeSub('de-ex-1', this)">
-            <i class="fas fa-code-branch"></i> Example 1: Evolving Pipeline
+            <i class="fas fa-code-branch"></i> Example 1: Pipeline Evolution
           </button>
           <button class="sub-nav-btn" onclick="switchDeSub('de-ex-2', this)">
-            <i class="fas fa-database"></i> Example 2: Schema Migration
+            <i class="fas fa-database"></i> Example 2: Migration (Multi-Image)
           </button>
-          </div>
+          <button class="sub-nav-btn" onclick="switchDeSub('de-ex-3', this)">
+            <i class="fas fa-project-diagram"></i> Example 3: Architecture
+          </button>
+        </div>
 
         <div id="de-ex-1" class="sub-case-content is-active">
-          <div class="content">
-            <h4 class="title is-5">Scenario: Adding Cost Allocation Logic</h4>
-            <p>The agent must modify an existing dbt project to add <code>cost_allocation</code> to <code>fct_sales_pipeline</code> without breaking downstream marts.</p>
-          </div>
+          <div class="content mb-4"><h4 class="title is-5">Scenario: Adding Cost Allocation Logic</h4><p>Agent modifies a dbt project to add logic to <code>fct_sales_pipeline</code> without breaking dependencies.</p></div>
           <div class="de-showcase">
-            <div class="de-video-box">
-              <video controls autoplay loop muted style="width: 100%; height: 100%; object-fit: cover;">
-                <source src="./static/videos/agent_coding_demo.mp4" type="video/mp4">
-              </video>
-              <div style="padding: 10px; background: #333; color: white; font-size: 0.8rem; text-align: center;">
-                Agent Coding Trace (Speed x10)
-              </div>
+            <div class="de-video-box hover-shadow">
+              <video controls loop muted style="width:100%; height:100%; object-fit:cover;"><source src="./static/videos/agent_coding_demo.mp4" type="video/mp4"></video>
             </div>
-            <div class="de-image-box">
-              <figure class="image">
-                <img src="./static/images/figure14_pipeline_error.png" alt="Pipeline Error">
-                <figcaption class="has-text-centered mt-2 is-size-7"><b>Dependency Graph:</b> Visualizing the cascade effect.</figcaption>
-              </figure>
+            <div class="de-image-box hover-shadow">
+              <img src="./static/images/figure14_pipeline_error.png" alt="Pipeline Error">
             </div>
           </div>
         </div>
 
         <div id="de-ex-2" class="sub-case-content">
-          <div class="content">
-            <h4 class="title is-5">Scenario: Migrating Legacy SQL to dbt</h4>
-            <p>The agent is tasked with refactoring raw SQL scripts into modular dbt models (Staging -> Intermediate -> Marts).</p>
-          </div>
+          <div class="content mb-4"><h4 class="title is-5">Scenario: Legacy SQL to dbt Migration</h4><p>Refactoring raw SQL scripts into modular Staging and Marts models.</p></div>
           <div class="de-showcase">
-            <div class="de-video-box">
-              <div style="height: 300px; display: flex; align-items: center; justify-content: center; color: white;">
-                <i class="fas fa-play-circle fa-3x"></i> <span style="margin-left:10px">Migration Demo Video</span>
-              </div>
-            </div>
-            <div class="de-image-box">
-              <div style="height: 300px; width: 100%; display: flex; align-items: center; justify-content: center; color: #999;">
-                Image: Before vs After DAG
-              </div>
+            <div class="de-grid-images">
+              <div class="de-image-box hover-shadow"><img src="./static/images/figure14_pipeline_error.png" alt="Before"></div>
+              <div class="de-image-box hover-shadow"><img src="./static/images/figure14_pipeline_error.png" alt="After"></div>
             </div>
           </div>
         </div>
 
+        <div id="de-ex-3" class="sub-case-content">
+          <div class="content mb-4"><h4 class="title is-5">Scenario: Designing a Data Warehouse Architecture</h4><p>Creating a blueprint for a multi-layer data warehouse from business requirements.</p></div>
+          <div class="de-showcase">
+            <div class="de-image-box hover-shadow" style="width:100%">
+              <img src="./static/images/figure14_pipeline_error.png" alt="Architecture Diagram">
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div id="da-case" class="main-case-content" style="display: none;">
-        
+      <div id="da-case" class="main-case-content" style="display:none;">
         <div class="sub-nav-container">
-          <button class="sub-nav-btn is-active" onclick="switchDaSub('da-ex-1', this)">
-            <i class="fas fa-globe-americas"></i> Example 1: Regional Analysis
-          </button>
-          <button class="sub-nav-btn" onclick="switchDaSub('da-ex-2', this)">
-            <i class="fas fa-users-slash"></i> Example 2: Customer Churn
-          </button>
+          <button class="sub-nav-btn is-active" onclick="switchDaSub('da-ex-1', this)"><i class="fas fa-globe-americas"></i> Regional Analysis</button>
+          <button class="sub-nav-btn" onclick="switchDaSub('da-ex-2', this)"><i class="fas fa-users-slash"></i> Churn Study</button>
+          <button class="sub-nav-btn" onclick="switchDaSub('da-ex-3', this)"><i class="fas fa-chart-bar"></i> Sales Forecast</button>
         </div>
 
         <div id="da-ex-1" class="sub-case-content is-active">
-          <div class="da-input-card">
-            <p class="has-text-weight-bold" style="color: #3273dc; margin-bottom: 5px;">
-              <i class="fas fa-user"></i> User Question:
-            </p>
-            <p class="is-size-5">"Analyze the differences in penetration rate and profitability across the four major regions (Central, East, South, West) for 2015-2017."</p>
+          <div class="da-input-card"><p><b>User Question:</b> "Analyze penetration rate and profitability across four regions."</p></div>
+          <div class="da-report-paper hover-shadow">
+            <h1>Regional Performance Report</h1>
+            <p>Based on sales data, the <b>East</b> region dominates with a 35% penetration rate.</p>
+            <img class="report-chart" src="./static/images/da_chart_example_1.png" alt="Chart">
           </div>
-          <div class="da-report-paper">
-            <h1 style="margin-top: 0;">Regional Performance Analysis Report</h1>
-            <p>Based on the sales data analysis, this report evaluates the penetration and profitability across four regions...</p>
-            <h2>1. Market Penetration Overview</h2>
-            <p>The <b>East</b> region dominates with a stable penetration rate of 35%, whereas the West has shown high volatility.</p>
-            <div class="columns">
-              <div class="column is-6">
-                  <img class="report-chart" src="./static/images/da_chart_example_1.png" alt="Chart 1">
-              </div>
-              <div class="column is-6"><p class="is-size-6"><i>Figure 1: Trend analysis showing segment performance.</i></p></div>
-            </div>
-            </div>
         </div>
 
         <div id="da-ex-2" class="sub-case-content">
-          <div class="da-input-card">
-            <p class="has-text-weight-bold" style="color: #3273dc; margin-bottom: 5px;">
-              <i class="fas fa-user"></i> User Question:
-            </p>
-            <p class="is-size-5">"Identify key factors driving customer churn in Q3 and propose a retention strategy for high-value accounts."</p>
-          </div>
-          <div class="da-report-paper">
-            <h1 style="margin-top: 0;">Q3 Customer Churn Diagnostic</h1>
-            <p>This analysis identifies a correlation between <b>support ticket response time</b> and churn rate among enterprise clients.</p>
-            <h2>1. Churn Drivers</h2>
-            <ul>
-                <li><b>Response Time:</b> Accounts with >24h wait times churned at 15%.</li>
-                <li><b>Feature Usage:</b> Low adoption of the "Reporting" module is a leading indicator.</li>
-            </ul>
-            <div style="background: #eee; height: 200px; display: flex; align-items: center; justify-content: center; margin: 15px 0; border-radius: 4px;">
-                [Chart: Churn Rate vs. Support Response Time]
-            </div>
-            <h2>2. Retention Strategy</h2>
-            <p>We recommend implementing a <b>priority support lane</b> for accounts with ARR > $50k.</p>
+          <div class="da-input-card"><p><b>User Question:</b> "Identify factors driving customer churn in Q3."</p></div>
+          <div class="da-report-paper hover-shadow">
+            <h1>Churn Diagnostic</h1>
+            <p>High correlation found between <b>response time > 24h</b> and churn.</p>
+            <img class="report-chart" src="./static/images/da_chart_example_1.png" alt="Chart">
           </div>
         </div>
 
+        <div id="da-ex-3" class="sub-case-content">
+          <div class="da-input-card"><p><b>User Question:</b> "Forecast Q4 revenue based on current pipeline velocity."</p></div>
+          <div class="da-report-paper hover-shadow">
+            <h1>Q4 Revenue Forecast</h1>
+            <p>Projected revenue is <b>$4.2M</b>, assuming current conversion rates hold.</p>
+            <img class="report-chart" src="./static/images/da_chart_example_1.png" alt="Chart">
+          </div>
+        </div>
       </div>
 
     </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="container is-max-desktop">
+<section class="section hero is-light" id="leaderboard">
+  <!-- <div class="container is-max-desktop animate-box"> -->
+  <div class="container is-wide animate-box">
     <h2 class="title is-3 has-text-centered">🏆 Leaderboard</h2>
     
-    <div class="leaderboard-container">
-      
+    <div class="leaderboard-container hover-shadow">
       <div class="tabs is-centered is-boxed is-toggle is-toggle-rounded custom-tabs">
         <ul>
-          <li class="is-active" onclick="switchLbTab('overall')" id="lb-tab-overall">
-            <a>
-              <span class="icon is-small"><i class="fas fa-globe"></i></span>
-              <span>Overall Ranking</span>
-            </a>
-          </li>
-          <li onclick="switchLbTab('de')" id="lb-tab-de">
-            <a>
-              <span class="icon is-small"><i class="fas fa-tools"></i></span>
-              <span>Data Engineering (DE)</span>
-            </a>
+          <li class="is-active" onclick="switchLbTab('de')" id="lb-tab-de">
+            <a><span class="icon is-small"><i class="fas fa-tools"></i></span><span>Data Engineering (DE)</span></a>
           </li>
           <li onclick="switchLbTab('da')" id="lb-tab-da">
-            <a>
-              <span class="icon is-small"><i class="fas fa-chart-pie"></i></span>
-              <span>Data Analysis (DA)</span>
-            </a>
+            <a><span class="icon is-small"><i class="fas fa-chart-pie"></i></span><span>Data Analysis (DA)</span></a>
           </li>
         </ul>
       </div>
 
-      <div id="table-overall" class="leaderboard-table-wrapper is-active">
+      <div id="table-de" class="leaderboard-table-wrapper is-active">
         <table class="table is-fullwidth is-hoverable">
           <thead>
             <tr>
-              <th width="5%">Rank</th>
-              <th>Model</th>
-              <th>Framework</th>
-              <th class="has-text-centered score-col" style="background:#f0f0f0;">🏆 Overall Score</th>
-              <th class="has-text-centered">🛠️ DE Score</th>
-              <th class="has-text-centered">📊 DA Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="rank-1">1</span></td>
-              <td><b>GPT-5</b> <span class="tag is-dark is-light is-rounded is-small">Proprietary</span></td>
-              <td>OpenHands</td>
-              <td class="has-text-centered score-col">52.06</td>
-              <td class="has-text-centered">45.95</td>
-              <td class="has-text-centered">52.06</td>
-            </tr>
-            <tr>
-              <td><span class="rank-2">2</span></td>
-              <td><b>o3</b> <span class="tag is-dark is-light is-rounded is-small">Proprietary</span></td>
-              <td>OpenHands</td>
-              <td class="has-text-centered score-col">48.78</td>
-              <td class="has-text-centered">44.80</td>
-              <td class="has-text-centered">48.78</td>
-            </tr>
-            <tr>
-              <td><span class="rank-3">3</span></td>
-              <td><b>GPT-5</b></td>
-              <td>Baseline</td>
-              <td class="has-text-centered score-col">47.46</td>
-              <td class="has-text-centered">46.08</td>
-              <td class="has-text-centered">56.79</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>Claude-4-Sonnet</td>
-              <td>OpenHands</td>
-              <td class="has-text-centered score-col">44.68</td>
-              <td class="has-text-centered">41.90</td>
-              <td class="has-text-centered">51.33</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>DeepSeek-V3.1 <span class="tag is-info is-light is-rounded is-small">Open</span></td>
-              <td>Baseline</td>
-              <td class="has-text-centered score-col">38.14</td>
-              <td class="has-text-centered">38.10</td>
-              <td class="has-text-centered">41.05</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div id="table-de" class="leaderboard-table-wrapper">
-        <table class="table is-fullwidth is-hoverable">
-          <thead>
-            <tr>
-              <th width="5%">Rank</th>
-              <th>Model</th>
-              <th>Framework</th>
+              <th width="5%">Rank</th><th>Model</th><th>Framework</th>
               <th class="has-text-centered score-col" style="background:#fff8e1;">🛠️ DE Score</th>
-              <th class="has-text-centered sub-score-col" title="Architecture Design">
-                <span class="icon"><i class="fas fa-sitemap"></i></span> Arch
-              </th>
-              <th class="has-text-centered sub-score-col" title="Implementation (CFS)">
-                <span class="icon"><i class="fas fa-code"></i></span> Impl
-              </th>
-              <th class="has-text-centered sub-score-col" title="Evolution (CFS)">
-                <span class="icon"><i class="fas fa-sync-alt"></i></span> Evol
-              </th>
+              <th class="has-text-centered sub-score-col"><i class="fas fa-sitemap"></i> Arch</th>
+              <th class="has-text-centered sub-score-col"><i class="fas fa-code"></i> Impl</th>
+              <th class="has-text-centered sub-score-col"><i class="fas fa-sync-alt"></i> Evol</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><span class="rank-1">1</span></td>
-              <td><b>GPT-5</b></td>
-              <td>Baseline</td>
-              <td class="has-text-centered score-col">46.08</td>
-              <td class="has-text-centered">67.47</td>
-              <td class="has-text-centered">51.50</td>
-              <td class="has-text-centered">27.94</td>
-            </tr>
-            <tr>
-              <td><span class="rank-2">2</span></td>
-              <td><b>GPT-5</b></td>
-              <td>OpenHands</td>
-              <td class="has-text-centered score-col">45.95</td>
-              <td class="has-text-centered">66.44</td>
-              <td class="has-text-centered">51.38</td>
-              <td class="has-text-centered">28.87</td>
-            </tr>
-            <tr>
-              <td><span class="rank-3">3</span></td>
-              <td>Claude-4-Sonnet</td>
-              <td>Baseline</td>
-              <td class="has-text-centered score-col">45.76</td>
-              <td class="has-text-centered">60.96</td>
-              <td class="has-text-centered">47.24</td>
-              <td class="has-text-centered">25.36</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>o3</td>
-              <td>OpenHands</td>
-              <td class="has-text-centered score-col">44.80</td>
-              <td class="has-text-centered">64.55</td>
-              <td class="has-text-centered">50.17</td>
-              <td class="has-text-centered">30.78</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>Qwen3-Coder</td>
-              <td>OpenHands</td>
-              <td class="has-text-centered score-col">43.17</td>
-              <td class="has-text-centered">55.31</td>
-              <td class="has-text-centered">50.66</td>
-              <td class="has-text-centered">28.65</td>
-            </tr>
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>Baseline</td><td class="has-text-centered score-col">46.08</td><td class="has-text-centered">67.47</td><td class="has-text-centered">51.50</td><td class="has-text-centered">27.94</td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">45.95</td><td class="has-text-centered">66.44</td><td class="has-text-centered">51.38</td><td class="has-text-centered">28.87</td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Claude-4-Sonnet</td><td>Baseline</td><td class="has-text-centered score-col">45.76</td><td class="has-text-centered">60.96</td><td class="has-text-centered">47.24</td><td class="has-text-centered">25.36</td></tr>
+            <tr><td>4</td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">44.80</td><td class="has-text-centered">64.55</td><td class="has-text-centered">50.17</td><td class="has-text-centered">30.78</td></tr>
+            <tr><td>5</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">43.17</td><td class="has-text-centered">55.31</td><td class="has-text-centered">50.66</td><td class="has-text-centered">28.65</td></tr>
           </tbody>
         </table>
-        <p class="help has-text-centered">
-          * <b>Arch:</b> Architecture Design | <b>Impl:</b> Implementation (CFS) | <b>Evol:</b> Evolution (CFS). Data from Table 3.
-        </p>
       </div>
 
       <div id="table-da" class="leaderboard-table-wrapper">
         <table class="table is-fullwidth is-hoverable">
           <thead>
             <tr>
-              <th width="5%">Rank</th>
-              <th>Model</th>
+              <th width="5%">Rank</th><th>Model</th><th>Framework</th>
               <th class="has-text-centered score-col" style="background:#effaf5;">📊 DA Score</th>
               <th class="has-text-centered sub-score-col">Rubric Score</th>
               <th class="has-text-centered sub-score-col">GSB Score</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><span class="rank-1">1</span></td>
-              <td><b>GPT-5</b> <span class="tag is-dark is-light is-rounded is-small">Baseline</span></td>
-              <td class="has-text-centered score-col">56.79</td>
-              <td class="has-text-centered">55.90</td>
-              <td class="has-text-centered">60.36</td>
-            </tr>
-            <tr>
-              <td><span class="rank-2">2</span></td>
-              <td><b>GPT-5</b> <span class="tag is-dark is-light is-rounded is-small">OpenHands</span></td>
-              <td class="has-text-centered score-col">52.06</td>
-              <td class="has-text-centered">52.97</td>
-              <td class="has-text-centered">48.40</td>
-            </tr>
-            <tr>
-              <td><span class="rank-3">3</span></td>
-              <td>Claude-4-Sonnet <span class="tag is-dark is-light is-rounded is-small">OpenHands</span></td>
-              <td class="has-text-centered score-col">51.33</td>
-              <td class="has-text-centered">48.87</td>
-              <td class="has-text-centered">61.20</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>o3 <span class="tag is-dark is-light is-rounded is-small">OpenHands</span></td>
-              <td class="has-text-centered score-col">48.78</td>
-              <td class="has-text-centered">46.95</td>
-              <td class="has-text-centered">56.10</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>DeepSeek-V3.1 <span class="tag is-info is-light is-rounded is-small">Open</span></td>
-              <td class="has-text-centered score-col">45.79</td>
-              <td class="has-text-centered">43.50</td>
-              <td class="has-text-centered">54.98</td>
-            </tr>
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b> <span class="tag is-dark is-light is-rounded is-small">Proprietary</span></td><td>Baseline</td><td class="has-text-centered score-col">56.79</td><td class="has-text-centered">55.90</td><td class="has-text-centered">60.36</td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>GPT-5</b> <span class="tag is-dark is-light is-rounded is-small">Proprietary</span></td><td>OpenHands</td><td class="has-text-centered score-col">52.06</td><td class="has-text-centered">52.97</td><td class="has-text-centered">48.40</td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Claude-4-Sonnet</td><td>OpenHands</td><td class="has-text-centered score-col">51.33</td><td class="has-text-centered">48.87</td><td class="has-text-centered">61.20</td></tr>
+            <tr><td>4</td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">48.78</td><td class="has-text-centered">46.95</td><td class="has-text-centered">56.10</td></tr>
+            <tr><td>5</td><td>DeepSeek-V3.1 <span class="tag is-info is-light is-rounded is-small">Open</span></td><td>OpenHands</td><td class="has-text-centered score-col">45.79</td><td class="has-text-centered">43.50</td><td class="has-text-centered">54.98</td></tr>
           </tbody>
         </table>
-        <p class="help has-text-centered">
-          * DA Score combines hierarchical Rubric scores and GSB (Good-Same-Bad) comparisons [cite: 108-109, 758].
-        </p>
       </div>
 
     </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="container is-max-desktop">
+<section class="section" id="analysis">
+  <div class="container is-max-desktop animate-box">
     <h2 class="title is-3 has-text-centered">Deep Dive Analysis</h2>
-    
     <div class="columns is-vcentered">
       <div class="column is-6">
         <h3 class="title is-4">Detailed Error Analysis</h3>
         <div class="content">
-          <p>
-            We conducted a rigorous error analysis on Repository-level Data Engineering tasks. The results highlight that <b>Holistic Orchestration</b> is the primary bottleneck.
-          </p>
+          <p>We conducted a rigorous error analysis on Repository-level Data Engineering tasks. The results highlight that <b>Holistic Orchestration</b> is the primary bottleneck.</p>
           <ul>
             <li><b>Dependency Errors (68%):</b> Most failures occur due to broken lineage graphs between Staging, Core, and Marts layers.</li>
             <li><b>Calculation Logic (38%):</b> Semantic errors in metric definitions are common, especially in upstream layers.</li>
@@ -660,9 +427,8 @@
           </ul>
         </div>
       </div>
-      
       <div class="column is-6">
-        <div class="vis-card">
+        <div class="vis-card hover-shadow">
           <img src="./static/images/average_error_sunburst_final_corrected.pdf" alt="Error Analysis Sunburst" style="width: 100%;">
           <p class="vis-caption">Fig 2. Average error distribution across 6 models on DE-Impl tasks.</p>
         </div>
@@ -672,7 +438,7 @@
 </section>
 
 <section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
+  <div class="container is-max-desktop content animate-box">
     <h2 class="title">BibTeX</h2>
     <pre><code>@article{lei2025dacomp,
   title={DAComp: Benchmarking Data Agents across the Full Data Intelligence Lifecycle},
@@ -686,90 +452,56 @@
 <footer class="footer">
   <div class="container">
     <div class="content has-text-centered">
-      <p>
-        This website is adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. 
-        Licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
-      </p>
+      <p>This website is adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. Licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
     </div>
   </div>
 </footer>
 
 <script>
-  // 1. Advanced Leaderboard Switcher
+  // --- Leaderboard Logic ---
   function switchLbTab(tabName) {
-    // 1. Handle Tabs UI
-    // Remove active class from all tabs
-    document.getElementById('lb-tab-overall').classList.remove('is-active');
     document.getElementById('lb-tab-de').classList.remove('is-active');
     document.getElementById('lb-tab-da').classList.remove('is-active');
-    
-    // Add active class to clicked tab
     document.getElementById('lb-tab-' + tabName).classList.add('is-active');
 
-    // 2. Handle Table Visibility
-    // Hide all tables
-    document.getElementById('table-overall').classList.remove('is-active');
     document.getElementById('table-de').classList.remove('is-active');
     document.getElementById('table-da').classList.remove('is-active');
-
-    // Show clicked table
     document.getElementById('table-' + tabName).classList.add('is-active');
   }
-  switchTab('overall');
+  // Default to DE
+  switchLbTab('de');
 
-  // 2. Case Study - Main Switcher (DE vs DA)
+  // --- Case Study Logic ---
   function switchMainCase(caseId) {
-    // Hide all main contents
-    document.querySelectorAll('.main-case-content').forEach(el => {
-      el.style.display = 'none';
-      el.classList.remove('is-active');
-    });
-    // Show target
+    document.querySelectorAll('.main-case-content').forEach(el => { el.style.display = 'none'; el.classList.remove('is-active'); });
     const target = document.getElementById(caseId);
     target.style.display = 'block';
-    setTimeout(() => target.classList.add('is-active'), 10); // simple fade-in trick
+    setTimeout(() => target.classList.add('is-active'), 10);
 
-    // Update Tabs
     document.getElementById('tab-case-de').classList.remove('is-active');
     document.getElementById('tab-case-da').classList.remove('is-active');
-    
-    if (caseId === 'de-case') {
-      document.getElementById('tab-case-de').classList.add('is-active');
-    } else {
-      document.getElementById('tab-case-da').classList.add('is-active');
-    }
+    document.getElementById('tab-case-' + (caseId === 'de-case' ? 'de' : 'da')).classList.add('is-active');
   }
 
-  // 3. Case Study - Sub Switcher (DE Examples)
   function switchDeSub(subId, btnElement) {
-    // Hide all DE sub-cases
     const parent = document.getElementById('de-case');
     parent.querySelectorAll('.sub-case-content').forEach(el => el.classList.remove('is-active'));
-    
-    // Show target
     document.getElementById(subId).classList.add('is-active');
-
-    // Update Buttons
     parent.querySelectorAll('.sub-nav-btn').forEach(btn => btn.classList.remove('is-active'));
     btnElement.classList.add('is-active');
   }
 
-  // 4. Case Study - Sub Switcher (DA Examples)
   function switchDaSub(subId, btnElement) {
-    // Hide all DA sub-cases
     const parent = document.getElementById('da-case');
     parent.querySelectorAll('.sub-case-content').forEach(el => el.classList.remove('is-active'));
-    
-    // Show target
     document.getElementById(subId).classList.add('is-active');
-
-    // Update Buttons
     parent.querySelectorAll('.sub-nav-btn').forEach(btn => btn.classList.remove('is-active'));
     btnElement.classList.add('is-active');
   }
 
-  // Mobile Navbar Burger
+  // --- Navbar & Animation ---
   document.addEventListener('DOMContentLoaded', () => {
+    // Mobile Burger
     const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
     if ($navbarBurgers.length > 0) {
       $navbarBurgers.forEach( el => {
@@ -781,6 +513,17 @@
         });
       });
     }
+
+    // Scroll Animation (Fade-in Up)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-box').forEach(el => observer.observe(el));
   });
 </script>
 
