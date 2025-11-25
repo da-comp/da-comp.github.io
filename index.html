@@ -1,1562 +1,711 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="DAComp: Benchmarking Data Agents across the Full Data Intelligence Lifecycle">
+  <meta name="keywords" content="Data Agents, Data Engineering, Data Analysis, LLM, Benchmark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DAComp: Benchmarking Data Agents</title>
 
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <meta name="description" content="DAComp" />
-    <meta name="author" content="" />
-    <link rel="icon" href="" type="image/x-icon" />
-    <title>DAComp</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
-    <!-- Bootstrap core CSS -->
-    <link href="./style/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <!-- Custom fonts for this template -->
-    <link
-      href="./style/font-awesome.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="./style/all.css"
-      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-      crossorigin="anonymous"
-    />
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-    <link rel="stylesheet" href="./static/css/index.css">
-    <script defer src="./static/js/fontawesome.all.min.js"></script>
-
-    <link
-      href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Custom styles for this template -->
-    <link href="./style/clean-blog.min.css" rel="stylesheet" />
-    <link href="./style/spider.css" rel="stylesheet" />
-
-    <style>
-      /* All fonts changed to Lato */
-      header.masthead .page-heading,
-      header.masthead .post-heading,
-      header.masthead .site-heading {
-        padding: 50px 0 75px;
-      }
-      
-      #main {
-        font-size: 18px;
-      }
-      
-      body {
-        font-family: 'Lato', sans-serif;
-      }
-      
-      #main h1,
-      #main h2,
-      #main h3,
-      #main h4 {
-        font-size: 28px;
-        font-weight: 700;
-        margin: 10px 0;
-      }
-      #main h5,
-      #main h6 {
-        font-weight: 600;
-        margin: 5px 0;
-      }
-
-      #spider-title {
-        font-family: 'Lato', sans-serif;
-        font-size: 80px;
-        color: #bff5d1;
-      }
-      
-      a {
-        color: #17a2b8;
-      }
-      
-      .list-group-item p {
-        margin: 5px 0;
-      }
-      
-      .card {
-        margin-bottom: 10px;
-      }
-      
-      .list-group {
-        margin-bottom: 10px;
-      }
-      
-      .card-header {
-        font-family: 'Lato', sans-serif;
-        font-weight: 800;
-        font-size: 30px;
-        background: #eee;
-      }
-      
-      .badge {
-        font-family: 'Lato', sans-serif;
-        font-weight: 300;
-      }
-      
-      code,
-      pre {
-        background: #eee;
-        padding: 1px 3px;
-      }
-      
-      .table td,
-      .table th {
-        padding: 0.42em;
-      }
-      
-      .table {
-        margin-top: 8px;
-      }
-      
-      .far,
-      .fas {
-        font-size: 18px;
-      }
-      
-      .affiliation {
-        font-style: italic;
-        font-family: 'Lato', sans-serif;
-        font-weight: 200;
-        font-size: 18px;
-      }
-      
-      .paperlink {
-        font-size: 18px;
-        font-family: 'Lato', sans-serif;
-      }
-      
-      .crossed {
-        position: relative;
-        padding: 0.1rem;
-        overflow: hidden;
-      }
-      
-      .crossed:before,
-      .crossed:after {
-        position: absolute;
-        content: '';
-        background: #dc3545 !important;
-        display: block;
-        width: 20%;
-        height: 2px;
-        transform: rotate(-45deg);
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-        border-radius: 1px;
-      }
-      
-      .crossed:after {
-        transform: rotate(45deg);
-      }
-      
-      .supfact {
-        color: #28a745;
-      }
-      
-      span.line {
-        display: inline-block;
-      }
-      
-      .data-paragraph,
-      .data-question,
-      .data-answer {
-        margin-bottom: 8px;
-        transition: height 0.2s;
-      }
-      
-      .data-paragraph .paragraph-title {
-        color: #888888;
-      }
-      
-      .data-paragraph .supfact {
-        background: #bbffcc;
-        border-radius: 3px;
-        color: inherit;
-        transition: background-color 0.2s;
-      }
-      
-      .data-paragraph .hide {
-        background: none !important;
-      }
-      
-      #bird-title {
-        color: #155E95;
-      }
-      
-      #logo-img {
-        display: inline;
-        max-height: 200px;
-        cursor: pointer;
-        transition: all 0.6s;
-      }
-      
-      #logo-img:hover {
-        transform: scale(1.4);
-      }
-      
-      #caption {
-        font-size: 30px;
-        font-family: 'Lato', sans-serif;
-      }
-      
-      #introduction {
-        font-size: 18px;
-        font-family: 'Lato', sans-serif;
-      }
-      
-      #paper {
-        background-color: #34314c;
-        border-color: #34314c;
-      }
-      
-      .column-img {
-        max-width: 100%;
-      }
-      
-      #illustration {
-        font-family: 'Lato', sans-serif;
-      }
-      
-      .dataset-btn {
-        background-color: #1F7872;
-        min-width: 50% !important;
-      }
-
-        .btn-d {  
-        color: #155E95;
-        font-family: 'Lato', sans-serif;
-        font-size: 18px;
-        font-weight: 1000;
-        width: 100%;
-        text-transform: none;
-        background-color: #EAF2FA;
-        border: 2px solid #155E95;
-        border-radius: 50px; 
-        display: inline-block;
-      }
-
-      .btn-d:hover {
-          background-color: #FF6969;
-          /* Change the background color when the cursor is over the button */
-      }
-
+  <style>
+    body { font-family: 'Noto Sans', sans-serif; background-color: #fbfbfb; }
+    .title { font-family: 'Google Sans', sans-serif; }
+    .publication-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .publication-authors { font-size: 1.25rem; color: #4a4a4a; }
+    .publication-venue { font-weight: bold; color: #333; margin-top: 10px; }
+    .button.is-dark { background-color: #363636; border-color: transparent; color: #fff; }
+    .button.is-dark:hover { background-color: #292929; }
     
-      #citation {
-        font-size: 0.75em;
-        overflow: auto;
-        border: 1px solid #999;
-        margin: 0 4px;
-        padding: 8px;
-        border-radius: 2px;
-      }
-      
-      .flex-box {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        height: 100%;
-        padding: 15px;
-      }
-      
-      .flex-box > div {
-        border-radius: 5px;
-        padding: 8px;
-      }
-      
-      #header-color {
-        background-color: #E1EACD;
-      }
-      
-      #button-group {
-        width: 100%;
-      }
-      
-      .button-row {
-        width: 80%;
-        margin: 0 auto;
-        padding: 5px;
-      }
-      
-      
-      .btn-d:hover {
-        background-color: #FF6969;
-      }
-      
-      .btn-b {
-        color: #fff;
-        font-weight: 400;
-        text-transform: none;
-        background-color: #1F7872;
-        border-radius: 50px;
-      }
-      
-      /* The row for train/dev is removed; .btn-round can remain if needed */
-      .btn-round {
-        height: auto;
-        transition: background-color 0.3s;
-      }
-      
-      .btn {
-        padding: 8px;
-      }
-      
-      [data-tooltip]:hover::after {
-        font-variant-caps: normal;
-        content: attr(data-tooltip);
-        position: absolute;
-        border: 1px solid black;
-        background: #eee;
-        padding: 0.25em;
-        border-radius: 2px;
-      }
-      
-      .table-wrapper {
-        width: 100%;
-        max-width: 100%;
-        display: block;
-        width: auto;
-        padding: 0.5rem;
-      }
-      
-      /* Leaderboard table styling */
-      #ex-table {
-        max-width: 100%;
-        table-layout: auto; 
-        border-collapse: collapse;
-        margin: 0 auto;
-      }
-      /* Center all header and cell content */
+    /* Advanced Leaderboard Styles */
+    .leaderboard-container { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 25px; }
+    
+    /* Tab Navigation */
+    .tabs.is-toggle li.is-active a { background-color: #209cee; border-color: #209cee; color: #fff; }
+    .tabs.is-toggle.custom-tabs li.is-active#tab-overall a { background-color: #363636; border-color: #363636; } /* Dark for Overall */
+    .tabs.is-toggle.custom-tabs li.is-active#tab-de a { background-color: #d29400; border-color: #d29400; } /* Orange/Yellow for DE */
+    .tabs.is-toggle.custom-tabs li.is-active#tab-da a { background-color: #257953; border-color: #257953; } /* Green for DA */
 
-      #ex-table th,
-      #ex-table td {
-          width: auto;
-          padding: 10px;
-          text-align: center;
-          vertical-align: middle;
-      }
-      
-      /* Custom cell classes */
-      .rank-cell {
-        font-weight: bold;
-        padding: 5px;
-        /* background: #f8f9fa; */
-        border-radius: 4px;
-      }
-      /* Increase model cell width to 60% */
-      .model-cell {
-        width: 60%;
-      }
-      /* Smaller date-cell rectangle */
-      .date-cell {
-        font-size: 0.75em;
-        color: #ffffff;
-        background-color: #574964;
-        padding: 1px 4px;
-        border-radius: 5px;
-        display: inline-block;
-      }
-    </style>
+    /* Table Visibility Control */
+    .leaderboard-table-wrapper { display: none; animation: fadeIn 0.3s ease-in-out; }
+    .leaderboard-table-wrapper.is-active { display: block; }
 
+    /* Column Styling */
+    .table th { vertical-align: middle; font-size: 0.95rem; }
+    .score-col { font-weight: 700; color: #333; background-color: #f9fbfc; }
+    .sub-score-col { font-size: 0.9rem; color: #666; }
+    
+    /* Rank Badges */
+    .rank-1 { background: #ffd700; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .rank-2 { background: #c0c0c0; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
+    .rank-3 { background: #cd7f32; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
+    
+    /* Icons */
+    .icon-spacer { margin-right: 5px; opacity: 0.7; }
+    
+    /* Visualization Section */
+    .vis-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; }
+    .vis-caption { font-size: 0.9rem; color: #666; margin-top: 10px; font-style: italic; }
 
+    /* Case Study Styles */
+    .case-study-container { margin-top: 30px; }
+    
+    /* DE Video & Image Wrapper */
+    .de-showcase { display: flex; gap: 20px; flex-wrap: wrap; }
+    .de-video-box { flex: 1; min-width: 300px; background: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .de-image-box { flex: 1; min-width: 300px; display: flex; align-items: center; justify-content: center; background: #f5f5f5; border-radius: 8px; padding: 10px; }
+    
+    /* DA Report Simulation (Markdown Look) */
+    .da-input-card { background: #f8f9fa; border-left: 5px solid #3273dc; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+    .da-report-paper { 
+      background: white; 
+      border: 1px solid #ddd; 
+      box-shadow: 0 0 15px rgba(0,0,0,0.05); 
+      padding: 40px; 
+      border-radius: 4px; 
+      font-family: 'Times New Roman', serif; /* 模拟正式报告字体 */
+      line-height: 1.6;
+      color: #2c3e50;
+    }
+    
+    /* Markdown Element Simulation */
+    .da-report-paper h1 { font-size: 1.8rem; font-weight: bold; color: #333; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+    .da-report-paper h2 { font-size: 1.4rem; font-weight: bold; color: #444; margin-top: 25px; margin-bottom: 10px; }
+    .da-report-paper p { margin-bottom: 15px; font-size: 1.1rem; }
+    .da-report-paper ul { list-style-type: disc; margin-left: 20px; margin-bottom: 15px; }
+    .da-report-paper img.report-chart { width: 100%; border: 1px solid #eee; border-radius: 4px; margin: 15px 0; }
+    .da-report-paper code { background-color: #f5f5f5; color: #d63384; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
+    
+    /* Toggle visibility */
+    .case-content { display: none; animation: fadeIn 0.5s; }
+    .case-content.is-active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    /* Sub-navigation Pills */
+    .sub-nav-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .sub-nav-btn { 
+      border: 1px solid #dbdbdb; 
+      background: white; 
+      color: #363636; 
+      padding: 8px 16px; 
+      border-radius: 20px; 
+      cursor: pointer; 
+      font-size: 0.9rem; 
+      transition: all 0.2s; 
+      display: flex; 
+      align-items: center; 
+      gap: 6px;
+    }
+    .sub-nav-btn:hover { background: #f5f5f5; border-color: #b5b5b5; }
+    .sub-nav-btn.is-active { 
+      background: #3273dc; 
+      color: white; 
+      border-color: #3273dc; 
+      box-shadow: 0 2px 5px rgba(50, 115, 220, 0.3);
+    }
+    
+    /* Animation for sub-cases */
+    .sub-case-content { display: none; animation: fadeIn 0.3s; }
+    .sub-case-content.is-active { display: block; }
+  </style>
+</head>
+<body>
 
-  </head>
-
-  <body>
-    <header class="masthead" id="header-color">
-      <div style="background-color: #244a6c; text-align: left">
-        <a href="https://xlang-ai.github.io/" target="_blank" style="display: flex; align-items: center;">
-          <img
-            style="margin-top: 5px; padding: 15px"
-            height="70px"
-            src="./logo/xlangai.png"
-            alt="Xlang AI Logo"
-          />
-          <span style="color: white; font-size: 24px; margin-left: 10px;">ByteDance Seed</span> <!-- 添加文本 -->
-        </a>
-        
-        <!-- <img
-          style="margin-top: 5px; padding: 15px"
-          height="70px"
-          src="./logo/logo-salesforce.png"
-        /> -->
-      </div>
-      <div style="background-color: #256093; text-align: left">
-        <div class="container">
-        
-          <div class="row">
-            <div class="col-lg-12 col-md-12 mx-auto">
-              <div class="row site-heading flex-box">
-                <div class="col-lg-12">
-                  <div class="align-middle">
-                    <h1 id="spider-title">DAComp</h1>
-                    <span class="subheading" id="caption">Benchmarking Data Agents across the Full Data Intelligence Lifecycle</span>
-                    <br>
-                    <!-- <span class="subheading" id="caption">ICLR 2025 <span style="color: #bff5d1;">Oral</span></span> -->
-                    <!-- <span class="subheading" id="caption">ICLR 2025 Oral 🔥</span> -->
-                    <!-- <span class="subheading" id="caption">ICLR 2025 <span style="color: #FF4D4D;">&nbsp;Oral🔥</span></span> -->
-                  </div>
-                </div>
-              </div>
-            </div>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          
+          <div class="has-text-centered" style="margin-bottom: 20px;">
+            <img src="./images/dacomp_logo.png" alt="DAComp Logo" style="width: 120px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
           </div>
-        </div>
-      </div>
-    </header>
 
-    <!-- Main Content -->
-    <div class="container" id="main" style="max-width: 1400px;">
-      <div class="row">
-        <div class="col-lg-5">
-          <div class="list-group">
-            <div class="list-group-item" id="introduction">
-              <!-- <div style="display: grid; grid-template-columns: auto auto; align-items: center;"> -->
-              <h4>About DAComp</h4>
-              <!-- <img src="https://badges.toozhao.com/badges/01JKQPJWT9GDEZW05QBNHTPE7S/green.svg" /> -->
-              <!-- </div> -->
-              <p>
-                DAComp is an evaluation framework comprising 632 real-world text-to-SQL workflow problems derived from enterprise-level database use cases. The databases in DAComp are sourced from real data applications, often containing over 1,000 columns and stored in local or cloud database systems such as BigQuery and Snowflake. 
-                This challenge calls for models to interact with complex SQL workflow environments, process extremely long contexts, perform intricate reasoning, and generate multiple SQL queries with diverse operations, often exceeding 100 lines, which goes far beyond traditional text-to-SQL challenges.
-              </p>
-              <br>
+          <h1 class="title publication-title">DAComp: Benchmarking Data Agents across the Full Data Intelligence Lifecycle</h1>
+          
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Fangyu Lei<sup>1,2,3*§</sup>,</span>
+            <span class="author-block">Jinxiang Meng<sup>1,2*</sup>,</span>
+            <span class="author-block">Yiming Huang<sup>5</sup>,</span>
+            <span class="author-block">Junjie Zhao<sup>3</sup>,</span>
+            <span class="author-block">Yitong Zhang<sup>6</sup>,</span>
+            <br> <span class="author-block">Jianwen Luo<sup>1,2</sup>,</span>
+            <span class="author-block">Xin Zou<sup>3</sup>,</span>
+            <span class="author-block">Ruiyi Yang<sup>3</sup>,</span>
+            <span class="author-block">Wenbo Shi<sup>3</sup>,</span>
+            <span class="author-block">Yan Gao<sup>3</sup>,</span>
+            <span class="author-block">Shizhu He<sup>1,2</sup>,</span>
+            <br>
+            <span class="author-block">Zuo Wang<sup>3</sup>,</span>
+            <span class="author-block">Qian Liu<sup>4</sup>,</span>
+            <span class="author-block">Yang Wang<sup>3</sup>,</span>
+            <span class="author-block">Ke Wang<sup>3,†</sup>,</span>
+            <span class="author-block">Jun Zhao<sup>1,2</sup>,</span>
+            <span class="author-block">Kang Liu<sup>1,2,†</sup></span>
+          </div>
 
+          <div class="is-size-6 publication-authors" style="margin-top: 15px;">
+            <span class="author-block"><sup>1</sup>Institute of Automation, CAS</span>&nbsp;&nbsp;
+            <span class="author-block"><sup>2</sup>University of Chinese Academy of Sciences</span><br>
+            <span class="author-block"><sup>3</sup>ByteDance Seed</span>&nbsp;&nbsp;
+            <span class="author-block"><sup>4</sup>TikTok</span>&nbsp;&nbsp;
+            <span class="author-block"><sup>5</sup>UC San Diego</span>&nbsp;&nbsp;
+            <span class="author-block"><sup>6</sup>NUS</span>
+          </div>
 
-              <div id="button-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
-                <a href="https://arxiv.org/abs/2411.07763" target="_blank">
-                  <button type="button" class="btn btn-d">
-                    <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                    </span>
-                    <span>Paper</span>
-                  </button>
+          <div class="is-size-7 publication-authors" style="margin-top: 10px; color: #666;">
+            <span class="author-block"><sup>*</sup>Equal Contribution,</span>
+            <span class="author-block"><sup>§</sup>Work done at ByteDance Seed,</span>
+            <span class="author-block"><sup>†</sup>Corresponding authors</span>
+          </div>
+
+          <div class="column has-text-centered" style="margin-top: 10px;">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/XXXX.XXXXX" class="button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
                 </a>
-                <a href="https://github.com/xlang-ai/Spider2" target="_blank">
-                  <button type="button" class="btn btn-d">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </button>
-                <a href="https://x.com/XLangNLP/status/1865896912555225587" target="_blank">
-                  <button type="button" class="btn btn-d">
-                    <span class="icon">
-                      <i class="fab fa-twitter"></i>
-                    </span>
-                    <span>Twitter</span>
-                  </button>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/anonymous/DAComp" class="button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
                 </a>
-              </a>
-              <a href="https://docs.google.com/document/d/1sCobAqJZcko-Vl3biOycwvCIR7kTwBPrhsgVfvaX1Fg/edit?tab=t.0" target="_blank">
-                <button type="button" class="btn btn-d">
-                  <span class="icon">
-                    <i class="far fa-paper-plane"></i>
-                  </span>
-                  <span>Submit</span>
-                </button>
-              </a>
-
-              </div>
-
-
-            </div>
-            <style>
-              .scroll-container {
-                position: relative;
-                width: 100%;
-                max-height: 300px;
-                overflow-y: scroll;
-              }
-
-              /* Hide the scrollbar by default */
-              .scroll-container::-webkit-scrollbar {
-                width: 10px;
-                background: transparent;
-              }
-
-              /* Set the scrollbar thumb color */
-              .scroll-container::-webkit-scrollbar-thumb {
-                background-color: #ffffff;
-                border-radius: 5px;
-              }
-
-              /* Show the scrollbar when the mouse is hovering over the scroll container */
-              .scroll-container:hover::-webkit-scrollbar {
-                width: 10px;
-              }
-
-              .scroll-container:hover::-webkit-scrollbar-thumb:hover {
-                background-color: #555555;
-              }
-            </style>
-
-
-            <div class="list-group-item" id="news">
-              <h4>News</h4>
-
-              <div class="scroll-container">
-                <div
-                  class="card card-outline-secondary mb-4"
-                  style="text-align: left"
-                >
-                <div class="card-body" style="background-color: #f1f6f9">
-                  <ul style="padding-left: 0">
-                    <li style="list-style-type: none">
-                      <span
-                        style="
-                          background-color: #B03052;
-                          color: white;
-                          padding: 2px 4px;
-                          border-radius: 5px;
-                        "
-                      >
-                        <strong style="color: #ffe7ce">2025-05-22:</strong>
-                      </span>
-                      We have created a new task setting, Spider2-DBT, and removed the original Spider2 setting. 
-                      <a
-                        href="https://github.com/xlang-ai/Spider2/tree/main/spider2-dbt"
-                        style="text-decoration: underline; color: #B03052"
-                        >Spider2-dbt</a
-                      >
-                      consists of only 68 tasks, enabling quick and smooth benchmarking with 
-                      <a
-                        href="https://github.com/xlang-ai/Spider2/tree/main/methods/spider-agent-dbt"
-                        style="text-decoration: underline; color: #B03052"
-                        >spider-agent-dbt</a
-                      >
-                      . 
-                      It is a comprehensive, repository-level text-to-SQL task.
-                    </li>
-                    <li style="list-style-type: none">
-                      <span
-                        style="
-                          background-color: #B03052;
-                          color: white;
-                          padding: 2px 4px;
-                          border-radius: 5px;
-                        "
-                      >
-                        <strong style="color: #ffe7ce">2025-04-20:</strong>
-                      </span>
-                      We provide the 
-                      <a
-                        href="https://github.com/xlang-ai/Spider2/tree/main/methods/gold-tables"
-                        style="text-decoration: underline; color: #B03052"
-                        >ground-truth tables</a
-                      >
-                      for spider2-lite and spider2-snow to help quick benchmarking and analysis. However, when using this setting, you must indicate that you are using oracle tables.
-                    </li>
-                    <li style="list-style-type: none">
-                      <span
-                        style="
-                          background-color: #B03052;
-                          color: white;
-                          padding: 2px 4px;
-                          border-radius: 5px;
-                        "
-                      >
-                        <strong style="color: #ffe7ce">2025-01-10:</strong>
-                      </span>
-                      Please refer to the
-                      <a
-                        href="https://docs.google.com/document/d/1a69mxO7m1nMndXp8H_-aggvYDbcbiS3rV9GPXEw-DeM/edit?usp=sharing"
-                        style="text-decoration: underline; color: #B03052"
-                        >data update log</a
-                      >
-                      to track changes in the evaluation examples. The
-                      <a
-                        href="https://spider2-sql.github.io/"
-                        style="text-decoration: underline; color: #B03052"
-                        >leaderboard</a
-                      >
-                      results will also change dynamically accordingly.
-                    </li>
-                    <li style="list-style-type: none">
-                      <span
-                        style="
-                          background-color: #B03052;
-                          color: white;
-                          padding: 2px 4px;
-                          border-radius: 5px;
-                        "
-                      >
-                        <strong style="color: #ffe7ce">2025-01-07:</strong>
-                      </span>
-                      Please note that we do not recommend using the DAComp Gold SQL we released for SFT,
-                      as it may affect the fairness of evaluation and hinder better benchmarking of the model's SQL capabilities.
-                      The release of Gold SQL is intended to help users design prompts.
-                    </li>
-                    <li style="list-style-type: none">
-                      <span
-                        style="
-                          background-color: #B03052;
-                          color: white;
-                          padding: 2px 4px;
-                          border-radius: 5px;
-                        "
-                      >
-                        <strong style="color: #ffe7ce">2024-12-26:</strong>
-                      </span>
-                      <strong>Using Spider-Agent to benchmark your LLMs!</strong>
-                      Considering the widespread attention to the traditional text-to-SQL setting,
-                      we now recommend using
-                      <a
-                        href="https://github.com/xlang-ai/Spider2/tree/main/methods/spider-agent-lite"
-                        style="text-decoration: underline; color: #B03052"
-                        >spider-agent-lite</a
-                      >
-                      and
-                      <a
-                        href="https://github.com/xlang-ai/Spider2/tree/main/methods/spider-agent-snow"
-                        style="text-decoration: underline; color: #B03052"
-                        >spider-agent-snow</a
-                      >
-                      to work with
-                      <a
-                        href="https://github.com/xlang-ai/Spider2/tree/main/spider2-lite/evaluation_suite"
-                        style="text-decoration: underline; color: #B03052"
-                        >spider2-lite</a
-                      >
-                      and
-                      <a
-                        href="https://github.com/xlang-ai/Spider2/tree/main/spider2-snow/evaluation_suite"
-                        style="text-decoration: underline; color: #B03052"
-                        >spider2-snow</a
-                      >
-                      for benchmarking your LLMs.
-                      The final output should be CSV files, not SQLs.
-                    </li>
-                    <li style="list-style-type: none">
-                      <span
-                        style="
-                          background-color: #B03052;
-                          color: white;
-                          padding: 2px 4px;
-                          border-radius: 5px;
-                        "
-                      >
-                        <strong style="color: #ffe7ce">2024-12-24:</strong>
-                      </span>
-                      Considering the many evaluation requirements, we have decided to
-                      <strong>release all examples and gold answers for self-evaluation</strong>.
-                      However, only a small amount of gold SQL is available. The leaderboard is still active.
-                      To have your method officially validated and upload your scores to the leaderboard,
-                      please follow the
-                      <a
-                        href="https://docs.google.com/document/d/1sCobAqJZcko-Vl3biOycwvCIR7kTwBPrhsgVfvaX1Fg/edit?usp=sharing"
-                        style="text-decoration: underline; color: #B03052"
-                        >submission guidance</a
-                      >.
-                    </li>
-                  </ul>
-                </div>
-
-                </div>
-              </div>
-            </div>
-
-            <div class="list-group-item" id="illustration">
-              <h4>Why DAComp?</h4>
-              <p align="left">
-                <div class="left">
-                  In 2018, we introduced <a href="https://yale-lily.github.io/spider"><b>Spider
-                      1.0</b> </a>, <a href="https://yale-lily.github.io/sparc"><b>SParC</b></a>, and <a
-                    href="https://yale-lily.github.io/cosql"><b>CoSQL</b></a> as part of the Yale Semantic Parsing and
-                  Text-to-SQL
-                  Challenge Series, attracting over 300 submissions from leading research labs worldwide.<br><br>
-    
-                  Now, in the era of Large Language Models (LLMs), we present <b>DAComp</b> to advance code generation,
-                  particularly text-to-SQL capabilities.<br><br>
-    
-                  This new benchmark offers a more realistic and challenging test of LLMs' performance on complex
-                  enterprise-level text-to-SQL workflows, involving complex data environments (e.g., >3000 columns),
-                  multiple SQL dialects (e.g., BigQuery, Snowflake), and diverse operations (e.g., transformation,
-                  analytics).<br><br>
-                  
-                  Notably, even the advanced LLMs-o1-preview solve only 17.1% of <b>DAComp</b> tasks. 
-                  For widely-used models like GPT-4o, the success rate is only 10.1% on <b>DAComp</b> tasks, 
-                  compared to 86.6% on <a href="https://yale-lily.github.io/spider">Spider 1.0</a>, 
-                  underscoring the substantial challenges posed by <b>DAComp</b>.<br><br>
-    
-    
-                  <div style="text-align: center;">
-                    <img src="./images/Spider2.png" alt="DAComp Image" style="max-width: 100%; height: auto; margin-bottom: 15px;">
-                  </div>
-
-                  <table border="1" style="font-size: 16px; width: 100%; border-collapse: collapse;">
-                    <tr>
-                        <th>Setting</th>
-                        <th>Task Type</th>
-                        <th>#Examples</th>
-                        <th>Databases</th>
-                        <th>Cost</th>
-                    </tr>
-                    <tr>
-                        <td><strong>DAComp-Snow</strong></td>
-                        <td>Text-to-SQL task</td>
-                        <td>547</td>
-                        <td>Snowflake(547)</td>
-                        <td><span style="color: red;">NO COST!😊</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>DAComp-Lite</strong></td>
-                        <td>Text-to-SQL task</td>
-                        <td>547</td>
-                        <td>BigQuery(214), Snowflake(198), SQLite(135)</td>
-                        <td>Some cost incurred</td>
-                    </tr>
-                    <tr>
-                      <td><strong>DAComp-DBT</strong></td>
-                      <td>Code agent task</td>
-                      <td>68</td>
-                      <td>DuckDB (DBT)(68)</td>
-                      <td><span style="color: red;">NO COST!😊</span></td>
-                    </tr>
-                </table>
-
-
-
-
-                </div>
-            </div>
-            <!-- <div class="list-group-item" id="illustration">
-              <h4>DAComp-lite</h4>
-              <p align="left">
-                To meet with research interests in traditional Text2SQL settings, we also release a subset of DAComp
-                called <a href="https://github.com/xlang-ai/Spider2/tree/main/spider2-lite#spider-20-lite"><b>Spider
-                    2.0-Lite</b></a> which is more self-contained, to support faster development and evaluation.
-              </p>
-            </div>
-            <div class="list-group-item" id="illustration">
-              <h4>DAComp-Snow</h4>
-              <p align="left">
-                DAComp-Snow includes 547 examples, all hosted on Snowflake, which offers participants free quotas. If
-                you want to test performance on a single SQL dialect, don’t hesitate to use DAComp-Snow.
-              </p>
-            </div>
-
-            <div class="list-group-item">
-              <h4>Submission</h4>
-              <p align="left">
-                Refer to the
-                <a
-                  href="https://github.com/xlang-ai/Spider2#-quickstart"><b>Quick Start</b></a>
-                to run your experiments on DAComp, DAComp-snow, or DAComp-lite.
-                For submission, provide a clear README, compressed code that passes your dev evaluation, any additional API keys required, and a report of prompt token counts for cost estimation.
-                Follow the <a
-                href="https://docs.google.com/document/d/1sCobAqJZcko-Vl3biOycwvCIR7kTwBPrhsgVfvaX1Fg/edit?usp=sharing"><b>Submission
-                Guideline</b></a> for evaluation on full dataset. Usually, we will return your results in 10 days!
-            
-              </p>
-            </div> -->
-            <div class="list-group-item">
-              <h4>Acknowledgement</h4>
-              <p align="left">
-                We thank Snowflake for their generous support in hosting the DAComp Challenge. We also thank Minghang Deng, Tianbao Xie, Yiheng Xu, Fan Zhou, Yuting Lan, Per Jacobsson, Yiming Huang, Canwen Xu, Zhewei Yao, and Binyuan Hui for their helpful feedback on this work. The website and submission guidelines are greatly inspired by <a href="https://bird-bench.github.io/">BIRD-SQL</a>, and we thank them for their contributions.
-              </p>
-              
-              <div style="text-align: center;">
-                <img src="./images/snowflake.png" alt="Snowflake Logo" style="width:250px; margin-top:10px;">
-              </div>
-            </div>
-            <div class="list-group-item">
-              <h4>Data Examples</h4>
-              <img src="images/homepage_examples.png" alt="test image" width="450">
-
-            <!-- <p align="left">
-              <strong>Query-level Task:</strong> we provide the DAComp-lite setting for almost all examples of
-              Spider2, which differs from traditional text-to-SQL. The most distinctive feature is that it doesn't
-              provide predefined schema information; the methods need to explore the database automatically and
-              interactively write SQL. (Somewhat similar to the setting in <a
-                href="https://github.com/princeton-nlp/intercode">Intercode</a>)
-            </p>
-
-            <p align="left">
-              <strong>Project-level Task:</strong> We also propose a new novel SQL generation task based on the DBT
-              project, which is a highly realistic SQL generation scenario commonly used in industry development,
-              requiring the completion of a complex data transformation task. (Somewhat similar to the setting in <a
-                href="https://www.swebench.com/">SWE-Bench</a>.)
-            </p> -->
-
-
-            <!--                     <div class="infoHeadline">-->
-            <!--                       <h2>Data Examples</h2>-->
-            <!--                    </div>-->
-            <!--                    <p align="left">-->
-            <!--                    <div class="left"> Some examples look like the following:-->
-            <!--                    </div>-->
-            <!--                    </p>-->
-            <!--                    <img src="images/bright_examples.png" alt="test image" width="600">-->
-
-            </div>
-
-            <div class="list-group-item">
-              <h4>Have Questions?</h4>
-              <p align="left">
-                <div class="left">Ask us questions at our <a href="https://github.com/xlang-ai/Spider2/issues">Github issues
-                    page</a> or contact <a href="mailto:lfy79001@gmail.com">Fangyu Lei</a>, <a
-                    href="https://chenjix.github.io/">Jixuan Chen</a>, <a href="https://rhythmcao.github.io/">Ruisheng
-                    Cao</a> or <a href="https://yuxiaooye.github.io/">Yuxiao Ye</a> for more information.
-                </div>
-              </div>
-            <div class="list-group-item">
-              <h4>Citation</h4>
-              
-              <pre id="citation">
-@article{lei2024spider,
-  title={DAComp: Evaluating language models on real-world enterprise text-to-sql workflows},
-  author={Lei, Fangyu and Chen, Jixuan and Ye, Yuxiao and Cao, Ruisheng and Shin, Dongchan and Su, Hongjin and Suo, Zhaoqing and Gao, Hongcheng and Hu, Wenjing and Yin, Pengcheng and others},
-  journal={arXiv preprint arXiv:2411.07763},
-  year={2024}
-}</pre>
+              </span>
+              <span class="link-block">
+                <a href="#" class="button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fas fa-database"></i></span>
+                  <span>Dataset</span>
+                </a>
+              </span>
             </div>
           </div>
+
         </div>
-
-        <div class="col-lg-7">
-          <div class="card card-outline-secondary">
-            <div class="card-header">Leaderboard</div>
-        
-            <ul class="nav nav-pills mb-3 justify-content-center" id="spider-tabs" style="margin-top: 10px; font-size: 20px;">
-              <li class="nav-item" style="margin-right: 10px;">
-                <a class="nav-link active" href="#" data-target="spiderSnow">DAComp-Snow</a>
-              </li>
-              <li class="nav-item" style="margin-right: 10px;">
-                <a class="nav-link" href="#" data-target="spiderLite">DAComp-lite</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" data-target="spiderMain">DAComp-DBT</a>
-              </li>
-            </ul>
-            
-        
-            <!-- 切换选项卡的脚本 -->
-            <script>
-              document.querySelectorAll('#spider-tabs .nav-link').forEach(function(tab) {
-                tab.addEventListener('click', function(e) {
-                  e.preventDefault();
-                  const target = this.getAttribute('data-target');
-        
-                  // 更新选中状态
-                  document.querySelectorAll('#spider-tabs .nav-link').forEach(nav => nav.classList.remove('active'));
-                  this.classList.add('active');
-        
-                  // 切换显示内容
-                  document.querySelectorAll('.spider-tab').forEach(block => {
-                    block.style.display = (block.id === target) ? 'block' : 'none';
-                  });
-                });
-              });
-            </script>
-        
-            <!-- DAComp-Snow -->
-            <div id="spiderSnow" class="list-group-item spider-tab" style="display: block;">
-              <p>
-                <strong><a href="https://github.com/xlang-ai/Spider2/tree/main/spider2-snow" target="_blank">DAComp-Snow</a></strong> is a self-contained text-to-SQL task that includes well-prepared database
-                metadata and documentation, includes <strong>547</strong> examples, all hosted on
-                <em><u>Snowflake</u></em>, which offers participants free quotas. <br>
-                Methods with <strong>-*</strong> use special settings (ground-truth tables) and are not included in the ranking.
-              </p>              
-              <div class="table-wrapper">
-                <table class="table" id="ex-table-snow">
-                  <thead class="thead-light">
-                    <tr>
-                      <th scope="col" rowspan="1" class="text-center">Rank</th>
-                      <th scope="col" rowspan="1" class="align-middle text-center">Method</th>
-                      <th scope="col" colspan="1" class="text-center">Score</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-
-
-                    <tr data-date="Sep 16, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        PAI-DataSurfer Agent  <br>
-                        <span class="affiliation">Alibaba Cloud Computing Platform </span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>61.24</b></td>
-                    </tr>
-
-                    <tr data-date="Aug 31, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        ByteBrain-Agent<br>
-                        <span class="affiliation">ByteDance Infra System Lab</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>60.88</b></td>
-                    </tr>
-
-
-                    <tr data-date="Aug 8, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        WindAgent + Claude-4-Sonnet<br>
-                        <span class="affiliation">MeiTuan AI For FinData</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>59.05</b></td>
-                    </tr>
-
-                    <tr data-date="Aug 6, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Ask Data with Relational Knowledge Graph<br>
-                        <span class="affiliation">AT&T CDO & RelationalAI</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>57.77</b></td>
-                    </tr>
-
-
-
-                    <tr data-date="Jul 7, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Meituan-agent<br>
-                        <span class="affiliation">Meituan FinData Intelligence</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>51.37</b></td>
-                    </tr>
-
-                    <tr data-date="Aug 4, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        AiCheng Agent<br>
-                        <span class="affiliation">alibaba_cfo_tech</span>
-                      </td>
-                      <td class="align-middle text-center"><b>50.27</b></td>
-                    </tr>
-
-
-                    <tr data-date="Jul 2, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Chat2DB-Agent + Claude-4-Sonnet<br>
-                        <span class="affiliation">Chat2DB</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>44.06</b></td>
-                    </tr>
-
-
-                    <tr data-date="May 22, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        ReFoRCE + o3<br>
-                        <span class="affiliation">Hao AI Lab x Snowflake</span><br>
-                        <a href="https://arxiv.org/abs/2502.00675" class="paperlink">[Deng et al. '25]</a>
-                      </td>
-                      <td class="align-middle text-center"><b>37.11</b></td>
-                    </tr>
-
-                    <!-- <tr data-date="Jul 19, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        TASL + Deepseek-R1<br>
-                        <span class="affiliation">HUST VLR Lab</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>32.18</b></td>
-                    </tr> -->
-
-
-                    <tr data-date="Jan 28, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        ReFoRCE + o1-preview<br>
-                        <span class="affiliation">Hao AI Lab x Snowflake</span><br>
-                        <a href="https://arxiv.org/abs/2502.00675" class="paperlink">[Deng et al. '25]</a>
-                      </td>
-                      <td class="align-middle text-center"><b>31.26</b></td>
-                    </tr>
-
-                    <tr data-date="Jul 28, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Qwen3-Coder
-                      </td>
-                      <td class="align-middle text-center"><b>31.08</b></td>
-                    </tr>
-
-                    <tr data-date="Mar 26, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Claude-4-Sonnet-20250514
-                      </td>
-                      <td class="align-middle text-center"><b>25.78</b></td>
-                    </tr>
-
-                    <tr data-date="Mar 8, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Claude-3.7-Sonnet-20250219
-                      </td>
-                      <td class="align-middle text-center"><b>24.50</b></td>
-                    </tr>
-
-                    <tr data-date="Mar 16, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Claude-3.7-Sonnet-20250219-Thinking
-                      </td>
-                      <td class="align-middle text-center"><b>24.31</b></td>
-                    </tr>
-
-                    <tr data-date="Nov 30, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + o1-preview
-                      </td>
-                      <td class="align-middle text-center"><b>23.58</b></td>
-                    </tr>
-
-                    <tr data-date="Feb 11, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + o1-2024-12-17
-                      </td>
-                      <td class="align-middle text-center"><b>23.21</b></td>
-                    </tr>
-                  
-                    <tr data-date="Feb 1, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + o3-mini-2025-01-31
-                      </td>
-                      <td class="align-middle text-center"><b>19.20</b></td>
-                    </tr>
-
-                    <tr data-date="Mar 7, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Claude-3.5-Sonnet-20241022<br>
-                        <span class="affiliation">AWS ProServe</span>
-                      </td>
-                      <td class="align-middle text-center"><b>19.01</b></td>
-                    </tr>
-
-                    <tr data-date="Feb 10, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Claude-3.5-Sonnet-20241022
-                      </td>
-                      <td class="align-middle text-center"><b>15.54</b></td>
-                    </tr>
-
-                    <tr data-date="Mar 13, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Gemini-2.0-Pro
-                      </td>
-                      <td class="align-middle text-center"><b>13.89</b></td>
-                    </tr>
-
-                    <tr data-date="Nov 30, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + GPT-4o-2024-11-20
-                      </td>
-                      <td class="align-middle text-center"><b>12.98</b></td>
-                    </tr>
-                  
-                    <!-- <tr data-date="Nov 30, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + GPT-4o-2024-08-06
-                      </td>
-                      <td class="align-middle text-center"><b>10.79</b></td>
-                    </tr> -->
-
-                    <tr data-date="Mar 8, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + DeepSeek-R1
-                      </td>
-                      <td class="align-middle text-center"><b>10.55</b></td>
-                    </tr>
-                  
-                    <tr data-date="Jan 3, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        CollideNL2SQL + GPT-4o<br>
-                        <span class="affiliation">Collide Tech</span>
-                      </td>
-                      <td class="align-middle text-center"><b>9.68</b></td>
-                    </tr>
-
-
-                    <tr data-date="Mar 10, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + QwQ-32B
-                      </td>
-                      <td class="align-middle text-center"><b>8.96</b></td>
-                    </tr>
-                  
-                    <tr data-date="Jan 20, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + DeepSeek-V3
-                      </td>
-                      <td class="align-middle text-center"><b>8.78</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 30, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Qwen2.5-Coder-32B-Instruct
-                      </td>
-                      <td class="align-middle text-center"><b>5.48</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Dail-SQL + GPT-4o
-                      </td>
-                      <td class="align-middle text-center"><b>2.20</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        CHESS + GPT-4o
-                      </td>
-                      <td class="align-middle text-center"><b>1.28</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        DIN-SQL + GPT-4o
-                      </td>
-                      <td class="align-middle text-center"><b>0.00</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        SFT CodeS-15B
-                      </td>
-                      <td class="align-middle text-center"><b>0.00</b></td>
-                    </tr>
-                  </tbody>
-                  
-                </table>
-              </div>
-            </div>
-        
-            <!-- DAComp-lite -->
-            <div id="spiderLite" class="list-group-item spider-tab" style="display: none;">
-              <p>
-                <strong><a href="https://github.com/xlang-ai/Spider2/tree/main/spider2-lite" target="_blank">DAComp-Lite</a></strong> is a self-contained text-to-SQL task that includes well-prepared 
-                <a href="https://github.com/xlang-ai/Spider2/tree/main/spider2-lite/resource/databases">database metadata</a>
-                and 
-                <a href="https://github.com/xlang-ai/Spider2/tree/main/spider2-lite/resource/documents">documentation</a>.
-                This setup enables a text-in, text-out approach, facilitating faster development and evaluation.
-                DAComp-lite, which has <strong>547</strong> examples, is designed to handle queries for 
-                <em><u>BigQuery</u></em>, <em><u>Snowflake</u></em>, and <em><u>SQLite</u></em> databases.
-              </p>
-              <div class="table-wrapper">
-                <table class="table" id="ex-table-lite">
-                  <thead class="thead-light">
-                    <tr>
-                      <th scope="col" rowspan="1" class="text-center">Rank</th>
-                      <th scope="col" rowspan="1" class="align-middle text-center">Method</th>
-                      <th scope="col" colspan="1" class="text-center">Score</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Rank 1 -->
-
-                    <tr data-date="Aug 7, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        AgenticData + Qwen3<br>
-                        <span class="affiliation">Tsinghua University</span><br>
-                        <a href="https://arxiv.org/abs/2508.05002" class="paperlink">[Sun et al. '25]</a>
-                      </td>
-                      <td class="align-middle text-center"><b>44.5</b></td>
-                    </tr>
-
-
-                    <tr data-date="May 22, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        ReFoRCE + o3<br>
-                        <span class="affiliation">Hao AI Lab x Snowflake</span><br>
-                        <a href="https://arxiv.org/abs/2502.00675" class="paperlink">[Deng et al. '25]</a>
-                      </td>
-                      <td class="align-middle text-center"><b>37.84</b></td>
-                    </tr>
-
-                    <tr data-date="Aug 7, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        ReFoRCE + Qwen3<br>
-                        <span class="affiliation">Tsinghua University</span><br>
-                        <a href="https://arxiv.org/abs/2508.05002" class="paperlink">[Sun et al. '25]</a>
-                      </td>
-                      <td class="align-middle text-center"><b>35.6</b></td>
-                    </tr>
-                
-
-                    <tr data-date="Jul 19, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        AutoLink + Deepseek-R1<br>
-                        <span class="affiliation">Anonymous</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>34.92</b></td>
-                    </tr>
-
-                    <tr data-date="Jul 10, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        RSL-SQL + o3<br>
-                        <span class="affiliation">HUST VLR Lab</span><br>
-                        <a href="https://arxiv.org/abs/2411.00073" class="paperlink">[Cao et al. '24]</a>
-                      </td>
-                      <td class="align-middle text-center"><b>33.09</b></td>
-                    </tr>
-
-                    <tr data-date="Apr 27, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        LinkAlign + DeepSeek-R1<br>
-                        <a href="https://arxiv.org/abs/2503.18596" class="paperlink">[Wang et al. '25]</a>
-                      </td>
-                      <td class="align-middle text-center"><b>33.09</b></td>
-                    </tr>
-
-                    <tr data-date="Jul 10, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        RSL-SQL + DeepSeek-R1<br>
-                        <span class="affiliation">HUST VLR Lab</span><br>
-                        <a href="https://arxiv.org/abs/2411.00073" class="paperlink">[Cao et al. '24]</a>
-                      </td>
-                      <td class="align-middle text-center"><b>30.53</b></td>
-                    </tr>
-
-                    <tr data-date="Jan 28, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        ReFoRCE + o1-preview<br>
-                        <span class="affiliation">Hao AI Lab x Snowflake</span><br>
-                        <a href="https://arxiv.org/abs/2502.00675" class="paperlink">[Deng et al. '25]</a>
-                      </td>
-                      <td class="align-middle text-center"><b>30.35</b></td>
-                    </tr>
-
-                    <tr data-date="Mar 16, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Claude-3.7-Sonnet-20250219-Thinking
-                      </td>
-                      <td class="align-middle text-center"><b>28.52</b></td>
-                    </tr>
-
-                    <tr data-date="Mar 31, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Claude-4-Sonnet-20250514
-                      </td>
-                      <td class="align-middle text-center"><b>27.79</b></td>
-                    </tr>
-
-                    <tr data-date="Jul 10, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        RSL-SQL + DeepSeek-V3<br>
-                        <span class="affiliation">HUST VLR Lab</span><br>
-                        <a href="https://arxiv.org/abs/2411.00073" class="paperlink">[Cao et al. '24]</a>
-                      </td>
-                      <td class="align-middle text-center"><b>26.14</b></td>
-                    </tr>
-
-                    <tr data-date="Mar 8, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Claude-3.7-Sonnet-20250219
-                      </td>
-                      <td class="align-middle text-center"><b>25.41</b></td>
-                    </tr>
-
-                    <tr data-date="Mar 28, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        LinkAlign + DeepSeek-V3<br>
-                        <a href="https://arxiv.org/abs/2503.18596" class="paperlink">[Wang et al. '25]</a>
-                      </td>
-                      <td class="align-middle text-center"><b>24.86</b></td>
-                    </tr>
-
-
-                    <tr data-date="Feb 10, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + o3-mini-2025-01-31
-                      </td>
-                      <td class="align-middle text-center"><b>23.40</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 30, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + o1-preview
-                      </td>
-                      <td class="align-middle text-center"><b>23.03</b></td>
-                    </tr>
-
-                    <tr data-date="Mar 10, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + DeepSeek-R1
-                      </td>
-                      <td class="align-middle text-center"><b>13.71</b></td>
-                    </tr>
-
-                    <tr data-date="Feb 10, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + GPT-4o-2024-11-20
-                      </td>
-                      <td class="align-middle text-center"><b>13.16</b></td>
-                    </tr>
-
-                    <tr data-date="Mar 13, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + QwQ-32B
-                      </td>
-                      <td class="align-middle text-center"><b>11.33</b></td>
-                    </tr>
-                  
-                    <tr data-date="Dec 31, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Duo<br>
-                        <span class="affiliation">Anonymous</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>8.96</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Claude-3.5-Sonnet-20240620
-                      </td>
-                      <td class="align-middle text-center"><b>8.32</b></td>
-                    </tr>
-
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Qwen2.5-Coder-32B-Instruct
-                      </td>
-                      <td class="align-middle text-center"><b>5.85</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        DailSQL + GPT-4o
-                      </td>
-                      <td class="align-middle text-center"><b>5.68</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        CHESS + GPT-4o
-                      </td>
-                      <td class="align-middle text-center"><b>3.84</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        DIN-SQL + GPT-4o
-                      </td>
-                      <td class="align-middle text-center"><b>1.46</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        SFT CodeS-15B
-                      </td>
-                      <td class="align-middle text-center"><b>0.73</b></td>
-                    </tr>
-                  </tbody>
-                  
-                </table>
-              </div>
-            </div>
-        
-            <!-- DAComp -->
-            <div id="spiderMain" class="list-group-item spider-tab" style="display: none;">
-              <p>
-                <strong><a href="https://github.com/xlang-ai/Spider2/tree/main/spider2-dbt" target="_blank">DAComp-DBT</a></strong>  is a comprehensive code generation agent task that includes
-                <strong>68</strong> examples.
-                Solving these tasks requires models to understand project code, navigating complex SQL environments and handling long contexts, surpassing traditional text-to-SQL challenges.
-              </p>
-              <div class="table-wrapper">
-                <table class="table" id="ex-table-main">
-                  <thead class="thead-light">
-                    <tr>
-                      <th scope="col" rowspan="1" class="text-center">Rank</th>
-                      <th scope="col" rowspan="1" class="align-middle text-center">Method</th>
-                      <th scope="col" colspan="1" class="text-center">Score</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Rank 1 -->
-
-                    <tr data-date="Jul 26, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Shadowfax-DBT-Agent + GPT-5<br>
-                        <span class="affiliation">Shadowfax Data</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>41.18</b></td>
-                    </tr>
-
-
-                    <tr data-date="Aug 9, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent-Extended + GPT-5<br>
-                        <span class="affiliation">Woods, A. '25.</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>39.71</b></td>
-                    </tr>
-
-                    <tr data-date="Sep 10, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Symbiote Agent<br>
-                        <span class="affiliation">JetBrains for Data</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>26.47</b></td>
-                    </tr>
-
-
-                    <tr data-date="Jun 25, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        DAQUV_QUVI_Agent<br>
-                        <span class="affiliation">DAQUV</span><br>
-                      </td>
-                      <td class="align-middle text-center"><b>17.65</b></td>
-                    </tr>
-
-
-                    <tr data-date="May 22, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + Claude-3.7-Sonnet-20250219
-                      </td>
-                      <td class="align-middle text-center"><b>14.70</b></td>
-                    </tr>
-
-
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + o1-preview
-                      </td>
-                      <td class="align-middle text-center"><b>13.24</b></td>
-                    </tr>
-
-                    <tr data-date="Jun 26, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + GPT-4.1
-                      </td>
-                      <td class="align-middle text-center"><b>10.29</b></td>
-                    </tr>
-                  
-                    <tr data-date="Nov 2, 2024">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + GPT-4o
-                      </td>
-                      <td class="align-middle text-center"><b>7.35</b></td>
-                    </tr>
-
-                    <tr data-date="Jun 26, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + o3-mini
-                      </td>
-                      <td class="align-middle text-center"><b>4.41</b></td>
-                    </tr>
-
-                    <tr data-date="Jun 26, 2025">
-                      <td scope="row" class="align-middle text-center rank-cell"></td>
-                      <td class="align-middle text-center">
-                        Spider-Agent + o3
-                      </td>
-                      <td class="align-middle text-center"><b>2.94</b></td>
-                    </tr>
-
-                  </tbody>
-                </table>
-              </div>
-            </div>
-        
-          </div>
-        </div>
-        
-        <!-- 自动生成Rank的脚本 -->
-        <script>
-          // 遍历所有 id 以 ex-table- 开头的表
-          document.querySelectorAll('table[id^="ex-table-"]').forEach(function(table) {
-            const rows = table.querySelectorAll('tbody tr');
-            let regularRank = 1; // 用于记录正常排名
-            
-            rows.forEach((row) => {
-              const date = row.getAttribute('data-date');
-              const rankCell = row.querySelector('.rank-cell');
-              const isSpecialRank = row.getAttribute('data-special-rank') === 'true';
-              
-              if (rankCell) {
-                if (isSpecialRank) {
-                  // 特殊排名显示为 "-"
-                  rankCell.innerHTML = `<b>-*</b><br><span class="badge badge-secondary">${date}</span>`;
-                } else {
-                  // 正常排名
-                  rankCell.innerHTML = `<b>${regularRank}</b><br><span class="badge badge-secondary">${date}</span>`;
-                  regularRank++;
-                }
-              }
-            });
-          });
-        </script>
-
-
-
       </div>
-
-      <hr />
-
-      <!-- Bootstrap core JavaScript -->
-      <script src="./js/jquery.min.js"></script>
-      <script src="./js/bootstrap.bundle.min.js"></script>
-
-      <!-- Custom scripts for this template -->
-      <script src="./js/clean-blog.min.js"></script>
     </div>
-  </body>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <img src="./static/images/figure1_placeholder.png" alt="DAComp Overview" style="width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+        <h2 class="subtitle has-text-centered" style="margin-top: 15px;">
+          DAComp evaluates agents on <b>Repository-level Data Engineering (DE)</b> and <b>Open-ended Data Analysis (DA)</b>.
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Real-world enterprise data intelligence workflows encompass data engineering that turns raw sources into analytical-ready tables and data analysis that convert those tables into decision-oriented insights. We introduce <b>DAComp</b>, a benchmark of <b>236 tasks</b> that mirrors these complex workflows.
+          </p>
+          <p>
+            <b>Data Engineering (DE)</b> tasks require repository-level engineering on industrial schemas, including designing and building multi-stage SQL pipelines. <b>Data Analysis (DA)</b> tasks pose open-ended business problems that demand strategic planning and insight synthesis. Our experiments reveal that even state-of-the-art agents falter, with DE success rates under 20% and DA scores averaging below 40%.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section has-background-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">🧩 Case Studies: Hard & Soft Axes</h2>
+    <p class="subtitle has-text-centered is-size-6">
+      Explore multiple scenarios showing how agents handle repository-level engineering (DE) and open-ended analysis (DA).
+    </p>
+
+    <div class="tabs is-centered is-boxed is-toggle is-toggle-rounded" style="margin-top: 20px;">
+      <ul>
+        <li class="is-active" onclick="switchMainCase('de-case')" id="tab-case-de">
+          <a>
+            <span class="icon"><i class="fas fa-cogs"></i></span>
+            <span><b>DE:</b> Repository Engineering</span>
+          </a>
+        </li>
+        <li onclick="switchMainCase('da-case')" id="tab-case-da">
+          <a>
+            <span class="icon"><i class="fas fa-chart-line"></i></span>
+            <span><b>DA:</b> Insight Report</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="case-study-container">
+      
+      <div id="de-case" class="main-case-content is-active">
+        
+        <div class="sub-nav-container">
+          <button class="sub-nav-btn is-active" onclick="switchDeSub('de-ex-1', this)">
+            <i class="fas fa-code-branch"></i> Example 1: Evolving Pipeline
+          </button>
+          <button class="sub-nav-btn" onclick="switchDeSub('de-ex-2', this)">
+            <i class="fas fa-database"></i> Example 2: Schema Migration
+          </button>
+          </div>
+
+        <div id="de-ex-1" class="sub-case-content is-active">
+          <div class="content">
+            <h4 class="title is-5">Scenario: Adding Cost Allocation Logic</h4>
+            <p>The agent must modify an existing dbt project to add <code>cost_allocation</code> to <code>fct_sales_pipeline</code> without breaking downstream marts.</p>
+          </div>
+          <div class="de-showcase">
+            <div class="de-video-box">
+              <video controls autoplay loop muted style="width: 100%; height: 100%; object-fit: cover;">
+                <source src="./static/videos/agent_coding_demo.mp4" type="video/mp4">
+              </video>
+              <div style="padding: 10px; background: #333; color: white; font-size: 0.8rem; text-align: center;">
+                Agent Coding Trace (Speed x10)
+              </div>
+            </div>
+            <div class="de-image-box">
+              <figure class="image">
+                <img src="./static/images/figure14_pipeline_error.png" alt="Pipeline Error">
+                <figcaption class="has-text-centered mt-2 is-size-7"><b>Dependency Graph:</b> Visualizing the cascade effect.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <div id="de-ex-2" class="sub-case-content">
+          <div class="content">
+            <h4 class="title is-5">Scenario: Migrating Legacy SQL to dbt</h4>
+            <p>The agent is tasked with refactoring raw SQL scripts into modular dbt models (Staging -> Intermediate -> Marts).</p>
+          </div>
+          <div class="de-showcase">
+            <div class="de-video-box">
+              <div style="height: 300px; display: flex; align-items: center; justify-content: center; color: white;">
+                <i class="fas fa-play-circle fa-3x"></i> <span style="margin-left:10px">Migration Demo Video</span>
+              </div>
+            </div>
+            <div class="de-image-box">
+              <div style="height: 300px; width: 100%; display: flex; align-items: center; justify-content: center; color: #999;">
+                Image: Before vs After DAG
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="da-case" class="main-case-content" style="display: none;">
+        
+        <div class="sub-nav-container">
+          <button class="sub-nav-btn is-active" onclick="switchDaSub('da-ex-1', this)">
+            <i class="fas fa-globe-americas"></i> Example 1: Regional Analysis
+          </button>
+          <button class="sub-nav-btn" onclick="switchDaSub('da-ex-2', this)">
+            <i class="fas fa-users-slash"></i> Example 2: Customer Churn
+          </button>
+        </div>
+
+        <div id="da-ex-1" class="sub-case-content is-active">
+          <div class="da-input-card">
+            <p class="has-text-weight-bold" style="color: #3273dc; margin-bottom: 5px;">
+              <i class="fas fa-user"></i> User Question:
+            </p>
+            <p class="is-size-5">"Analyze the differences in penetration rate and profitability across the four major regions (Central, East, South, West) for 2015-2017."</p>
+          </div>
+          <div class="da-report-paper">
+            <h1 style="margin-top: 0;">Regional Performance Analysis Report</h1>
+            <p>Based on the sales data analysis, this report evaluates the penetration and profitability across four regions...</p>
+            <h2>1. Market Penetration Overview</h2>
+            <p>The <b>East</b> region dominates with a stable penetration rate of 35%, whereas the West has shown high volatility.</p>
+            <div class="columns">
+              <div class="column is-6">
+                  <img class="report-chart" src="./static/images/da_chart_example_1.png" alt="Chart 1">
+              </div>
+              <div class="column is-6"><p class="is-size-6"><i>Figure 1: Trend analysis showing segment performance.</i></p></div>
+            </div>
+            </div>
+        </div>
+
+        <div id="da-ex-2" class="sub-case-content">
+          <div class="da-input-card">
+            <p class="has-text-weight-bold" style="color: #3273dc; margin-bottom: 5px;">
+              <i class="fas fa-user"></i> User Question:
+            </p>
+            <p class="is-size-5">"Identify key factors driving customer churn in Q3 and propose a retention strategy for high-value accounts."</p>
+          </div>
+          <div class="da-report-paper">
+            <h1 style="margin-top: 0;">Q3 Customer Churn Diagnostic</h1>
+            <p>This analysis identifies a correlation between <b>support ticket response time</b> and churn rate among enterprise clients.</p>
+            <h2>1. Churn Drivers</h2>
+            <ul>
+                <li><b>Response Time:</b> Accounts with >24h wait times churned at 15%.</li>
+                <li><b>Feature Usage:</b> Low adoption of the "Reporting" module is a leading indicator.</li>
+            </ul>
+            <div style="background: #eee; height: 200px; display: flex; align-items: center; justify-content: center; margin: 15px 0; border-radius: 4px;">
+                [Chart: Churn Rate vs. Support Response Time]
+            </div>
+            <h2>2. Retention Strategy</h2>
+            <p>We recommend implementing a <b>priority support lane</b> for accounts with ARR > $50k.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">🏆 Leaderboard</h2>
+    
+    <div class="leaderboard-container">
+      
+      <div class="tabs is-centered is-boxed is-toggle is-toggle-rounded custom-tabs">
+        <ul>
+          <li class="is-active" onclick="switchLbTab('overall')" id="lb-tab-overall">
+            <a>
+              <span class="icon is-small"><i class="fas fa-globe"></i></span>
+              <span>Overall Ranking</span>
+            </a>
+          </li>
+          <li onclick="switchLbTab('de')" id="lb-tab-de">
+            <a>
+              <span class="icon is-small"><i class="fas fa-tools"></i></span>
+              <span>Data Engineering (DE)</span>
+            </a>
+          </li>
+          <li onclick="switchLbTab('da')" id="lb-tab-da">
+            <a>
+              <span class="icon is-small"><i class="fas fa-chart-pie"></i></span>
+              <span>Data Analysis (DA)</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div id="table-overall" class="leaderboard-table-wrapper is-active">
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th width="5%">Rank</th>
+              <th>Model</th>
+              <th>Framework</th>
+              <th class="has-text-centered score-col" style="background:#f0f0f0;">🏆 Overall Score</th>
+              <th class="has-text-centered">🛠️ DE Score</th>
+              <th class="has-text-centered">📊 DA Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="rank-1">1</span></td>
+              <td><b>GPT-5</b> <span class="tag is-dark is-light is-rounded is-small">Proprietary</span></td>
+              <td>OpenHands</td>
+              <td class="has-text-centered score-col">52.06</td>
+              <td class="has-text-centered">45.95</td>
+              <td class="has-text-centered">52.06</td>
+            </tr>
+            <tr>
+              <td><span class="rank-2">2</span></td>
+              <td><b>o3</b> <span class="tag is-dark is-light is-rounded is-small">Proprietary</span></td>
+              <td>OpenHands</td>
+              <td class="has-text-centered score-col">48.78</td>
+              <td class="has-text-centered">44.80</td>
+              <td class="has-text-centered">48.78</td>
+            </tr>
+            <tr>
+              <td><span class="rank-3">3</span></td>
+              <td><b>GPT-5</b></td>
+              <td>Baseline</td>
+              <td class="has-text-centered score-col">47.46</td>
+              <td class="has-text-centered">46.08</td>
+              <td class="has-text-centered">56.79</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Claude-4-Sonnet</td>
+              <td>OpenHands</td>
+              <td class="has-text-centered score-col">44.68</td>
+              <td class="has-text-centered">41.90</td>
+              <td class="has-text-centered">51.33</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>DeepSeek-V3.1 <span class="tag is-info is-light is-rounded is-small">Open</span></td>
+              <td>Baseline</td>
+              <td class="has-text-centered score-col">38.14</td>
+              <td class="has-text-centered">38.10</td>
+              <td class="has-text-centered">41.05</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="table-de" class="leaderboard-table-wrapper">
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th width="5%">Rank</th>
+              <th>Model</th>
+              <th>Framework</th>
+              <th class="has-text-centered score-col" style="background:#fff8e1;">🛠️ DE Score</th>
+              <th class="has-text-centered sub-score-col" title="Architecture Design">
+                <span class="icon"><i class="fas fa-sitemap"></i></span> Arch
+              </th>
+              <th class="has-text-centered sub-score-col" title="Implementation (CFS)">
+                <span class="icon"><i class="fas fa-code"></i></span> Impl
+              </th>
+              <th class="has-text-centered sub-score-col" title="Evolution (CFS)">
+                <span class="icon"><i class="fas fa-sync-alt"></i></span> Evol
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="rank-1">1</span></td>
+              <td><b>GPT-5</b></td>
+              <td>Baseline</td>
+              <td class="has-text-centered score-col">46.08</td>
+              <td class="has-text-centered">67.47</td>
+              <td class="has-text-centered">51.50</td>
+              <td class="has-text-centered">27.94</td>
+            </tr>
+            <tr>
+              <td><span class="rank-2">2</span></td>
+              <td><b>GPT-5</b></td>
+              <td>OpenHands</td>
+              <td class="has-text-centered score-col">45.95</td>
+              <td class="has-text-centered">66.44</td>
+              <td class="has-text-centered">51.38</td>
+              <td class="has-text-centered">28.87</td>
+            </tr>
+            <tr>
+              <td><span class="rank-3">3</span></td>
+              <td>Claude-4-Sonnet</td>
+              <td>Baseline</td>
+              <td class="has-text-centered score-col">45.76</td>
+              <td class="has-text-centered">60.96</td>
+              <td class="has-text-centered">47.24</td>
+              <td class="has-text-centered">25.36</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>o3</td>
+              <td>OpenHands</td>
+              <td class="has-text-centered score-col">44.80</td>
+              <td class="has-text-centered">64.55</td>
+              <td class="has-text-centered">50.17</td>
+              <td class="has-text-centered">30.78</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Qwen3-Coder</td>
+              <td>OpenHands</td>
+              <td class="has-text-centered score-col">43.17</td>
+              <td class="has-text-centered">55.31</td>
+              <td class="has-text-centered">50.66</td>
+              <td class="has-text-centered">28.65</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="help has-text-centered">
+          * <b>Arch:</b> Architecture Design | <b>Impl:</b> Implementation (CFS) | <b>Evol:</b> Evolution (CFS). Data from Table 3.
+        </p>
+      </div>
+
+      <div id="table-da" class="leaderboard-table-wrapper">
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th width="5%">Rank</th>
+              <th>Model</th>
+              <th class="has-text-centered score-col" style="background:#effaf5;">📊 DA Score</th>
+              <th class="has-text-centered sub-score-col">Rubric Score</th>
+              <th class="has-text-centered sub-score-col">GSB Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="rank-1">1</span></td>
+              <td><b>GPT-5</b> <span class="tag is-dark is-light is-rounded is-small">Baseline</span></td>
+              <td class="has-text-centered score-col">56.79</td>
+              <td class="has-text-centered">55.90</td>
+              <td class="has-text-centered">60.36</td>
+            </tr>
+            <tr>
+              <td><span class="rank-2">2</span></td>
+              <td><b>GPT-5</b> <span class="tag is-dark is-light is-rounded is-small">OpenHands</span></td>
+              <td class="has-text-centered score-col">52.06</td>
+              <td class="has-text-centered">52.97</td>
+              <td class="has-text-centered">48.40</td>
+            </tr>
+            <tr>
+              <td><span class="rank-3">3</span></td>
+              <td>Claude-4-Sonnet <span class="tag is-dark is-light is-rounded is-small">OpenHands</span></td>
+              <td class="has-text-centered score-col">51.33</td>
+              <td class="has-text-centered">48.87</td>
+              <td class="has-text-centered">61.20</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>o3 <span class="tag is-dark is-light is-rounded is-small">OpenHands</span></td>
+              <td class="has-text-centered score-col">48.78</td>
+              <td class="has-text-centered">46.95</td>
+              <td class="has-text-centered">56.10</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>DeepSeek-V3.1 <span class="tag is-info is-light is-rounded is-small">Open</span></td>
+              <td class="has-text-centered score-col">45.79</td>
+              <td class="has-text-centered">43.50</td>
+              <td class="has-text-centered">54.98</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="help has-text-centered">
+          * DA Score combines hierarchical Rubric scores and GSB (Good-Same-Bad) comparisons [cite: 108-109, 758].
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Deep Dive Analysis</h2>
+    
+    <div class="columns is-vcentered">
+      <div class="column is-6">
+        <h3 class="title is-4">Detailed Error Analysis</h3>
+        <div class="content">
+          <p>
+            We conducted a rigorous error analysis on Repository-level Data Engineering tasks. The results highlight that <b>Holistic Orchestration</b> is the primary bottleneck.
+          </p>
+          <ul>
+            <li><b>Dependency Errors (68%):</b> Most failures occur due to broken lineage graphs between Staging, Core, and Marts layers.</li>
+            <li><b>Calculation Logic (38%):</b> Semantic errors in metric definitions are common, especially in upstream layers.</li>
+            <li><b>Capability Gap:</b> While GPT-5 performs well on planning, open-source models struggle significantly with "SQL Omission" in complex pipelines.</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="column is-6">
+        <div class="vis-card">
+          <img src="./static/images/average_error_sunburst_final_corrected.pdf" alt="Error Analysis Sunburst" style="width: 100%;">
+          <p class="vis-caption">Fig 2. Average error distribution across 6 models on DE-Impl tasks.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{lei2025dacomp,
+  title={DAComp: Benchmarking Data Agents across the Full Data Intelligence Lifecycle},
+  author={Lei, Fangyu and Meng, Jinxiang and Huang, Yiming and others},
+  journal={arXiv preprint arXiv:XXXX.XXXXX},
+  year={2025}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        This website is adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. 
+        Licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 1. Advanced Leaderboard Switcher
+  function switchLbTab(tabName) {
+    // 1. Handle Tabs UI
+    // Remove active class from all tabs
+    document.getElementById('lb-tab-overall').classList.remove('is-active');
+    document.getElementById('lb-tab-de').classList.remove('is-active');
+    document.getElementById('lb-tab-da').classList.remove('is-active');
+    
+    // Add active class to clicked tab
+    document.getElementById('lb-tab-' + tabName).classList.add('is-active');
+
+    // 2. Handle Table Visibility
+    // Hide all tables
+    document.getElementById('table-overall').classList.remove('is-active');
+    document.getElementById('table-de').classList.remove('is-active');
+    document.getElementById('table-da').classList.remove('is-active');
+
+    // Show clicked table
+    document.getElementById('table-' + tabName).classList.add('is-active');
+  }
+  switchTab('overall');
+
+  // 2. Case Study - Main Switcher (DE vs DA)
+  function switchMainCase(caseId) {
+    // Hide all main contents
+    document.querySelectorAll('.main-case-content').forEach(el => {
+      el.style.display = 'none';
+      el.classList.remove('is-active');
+    });
+    // Show target
+    const target = document.getElementById(caseId);
+    target.style.display = 'block';
+    setTimeout(() => target.classList.add('is-active'), 10); // simple fade-in trick
+
+    // Update Tabs
+    document.getElementById('tab-case-de').classList.remove('is-active');
+    document.getElementById('tab-case-da').classList.remove('is-active');
+    
+    if (caseId === 'de-case') {
+      document.getElementById('tab-case-de').classList.add('is-active');
+    } else {
+      document.getElementById('tab-case-da').classList.add('is-active');
+    }
+  }
+
+  // 3. Case Study - Sub Switcher (DE Examples)
+  function switchDeSub(subId, btnElement) {
+    // Hide all DE sub-cases
+    const parent = document.getElementById('de-case');
+    parent.querySelectorAll('.sub-case-content').forEach(el => el.classList.remove('is-active'));
+    
+    // Show target
+    document.getElementById(subId).classList.add('is-active');
+
+    // Update Buttons
+    parent.querySelectorAll('.sub-nav-btn').forEach(btn => btn.classList.remove('is-active'));
+    btnElement.classList.add('is-active');
+  }
+
+  // 4. Case Study - Sub Switcher (DA Examples)
+  function switchDaSub(subId, btnElement) {
+    // Hide all DA sub-cases
+    const parent = document.getElementById('da-case');
+    parent.querySelectorAll('.sub-case-content').forEach(el => el.classList.remove('is-active'));
+    
+    // Show target
+    document.getElementById(subId).classList.add('is-active');
+
+    // Update Buttons
+    parent.querySelectorAll('.sub-nav-btn').forEach(btn => btn.classList.remove('is-active'));
+    btnElement.classList.add('is-active');
+  }
+</script>
+
+</body>
 </html>
