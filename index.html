@@ -128,30 +128,43 @@
     }
 
     /* --- Leaderboard Table Tweaks --- */
-    
-    /* 1. 强制表格撑满容器 */
+
+    /* 1. 外层容器：允许横向滚动 */
+    .leaderboard-table-wrapper {
+      display: none;
+      width: 100%;
+      overflow-x: auto; /* 关键：内容超出时显示横向滚动条 */
+      -webkit-overflow-scrolling: touch; /* 让移动端滚动更顺滑 */
+      padding-bottom: 5px; /* 防止滚动条挡住最后一行 */
+    }
+
+    /* 2. 表格：设置最小宽度，强制撑开容器 */
+    .leaderboard-table-wrapper table {
+      width: 100%; 
+      min-width: 800px; /* 【关键】设置一个足够宽的最小值。当屏幕小于800px时，就会出现滚动条 */
+      table-layout: auto; /* 让列宽根据内容自适应，或者用 fixed 也可以 */
+    }
+
+    /* 3. 单元格：强制不换行，完整显示内容 */
+    .leaderboard-table-wrapper table th,
+    .leaderboard-table-wrapper table td {
+      text-align: center !important;
+      vertical-align: middle !important;
+      padding: 12px 15px !important; /* 增加左右间距，让表格更宽敞 */
+      
+      /* 4.核心设置：不换行，也不隐藏 */
+      white-space: nowrap !important; 
+      overflow: visible !important;
+      text-overflow: clip !important; /* 移除省略号 */
+    }
+
+      /* 5. 强制表格撑满容器 */
     .leaderboard-table-wrapper table {
       width: 100% !important;
       table-layout: fixed; /* 固定列宽算法，能让表格更均匀 */
     }
 
-    /* 2. 强制所有内容居中 */
-    .leaderboard-table-wrapper table th,
-    .leaderboard-table-wrapper table td {
-      text-align: center !important;
-      vertical-align: middle !important;
-      padding: 12px 8px !important; /* 增加一点内边距，让文字不拥挤 */
-    }
 
-    /* 3. (可选) 如果某列内容太长（如 Model Name），防止换行太难看 */
-    .leaderboard-table-wrapper td:nth-child(2), .leaderboard-table-wrapper td:nth-child(3),.leaderboard-table-wrapper td:nth-child(4),.leaderboard-table-wrapper td:nth-child(5){
-      white-space: nowrap;      /* 防止模型名字换行 */
-      overflow: hidden;
-      text-overflow: ellipsis;  /* 超出显示省略号 */
-    }
-
-
-    
 
     /* --- Custom Width --- */
     /* 覆盖 Bulma 默认的 960px，改为 1200px 或更大 */
