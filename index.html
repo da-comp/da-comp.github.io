@@ -41,20 +41,43 @@
     .hover-scale { transition: transform 0.3s; display: block; }
     .hover-scale:hover { transform: scale(1.02); }
 
-    /* --- Leaderboard --- */
-    .leaderboard-container { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 25px; transition: height 0.3s; }
-    .tabs.is-toggle li.is-active a { background-color: #209cee; border-color: #209cee; color: #fff; }
-    /* Custom colors for tabs */
-    .tabs.is-toggle.custom-tabs li.is-active#lb-tab-de a { background-color: #d29400; border-color: #d29400; } /* DE Orange */
-    .tabs.is-toggle.custom-tabs li.is-active#lb-tab-da a { background-color: #257953; border-color: #257953; } /* DA Green */
+    /* --- Advanced Leaderboard Styles --- */
+    .leaderboard-container { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 25px; position: relative; }
     
-    .table tr { transition: background-color 0.2s; }
-    .table tr:hover { background-color: #fcfcfc; }
-    .rank-1 { background: #ffd700; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    /* Language Switcher (Top Right) */
+    .lang-switch { 
+      display: flex; justify-content: flex-end; margin-bottom: 15px; 
+    }
+    .lang-btn {
+      border: 1px solid #dbdbdb; background: #fff; padding: 5px 12px; font-size: 0.85rem; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lang-btn:first-child { border-radius: 4px 0 0 4px; border-right: none; }
+    .lang-btn:last-child { border-radius: 0 4px 4px 0; }
+    .lang-btn:hover { background: #f5f5f5; }
+    .lang-btn.is-active { background: #363636; color: white; border-color: #363636; }
+
+    /* Custom Tabs Colors */
+    .tabs.is-toggle li.is-active a { color: #fff; border-color: transparent; }
+    /* Define distinct colors for each task tab */
+    .tabs.is-toggle.custom-tabs li.is-active#lb-tab-arch a { background-color: #8e44ad; } /* Purple */
+    .tabs.is-toggle.custom-tabs li.is-active#lb-tab-impl a { background-color: #2980b9; } /* Blue */
+    .tabs.is-toggle.custom-tabs li.is-active#lb-tab-evol a { background-color: #d35400; } /* Orange */
+    .tabs.is-toggle.custom-tabs li.is-active#lb-tab-da a   { background-color: #27ae60; } /* Green */
+
+    /* Table Styles */
+    .table th { vertical-align: middle; font-size: 0.9rem; white-space: nowrap; }
+    .score-col { font-weight: 700; color: #333; background-color: #f9fbfc; border-left: 2px solid #eee; border-right: 2px solid #eee; }
+    
+    /* Badges */
+    .rank-1 { background: #ffd700; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
     .rank-2 { background: #c0c0c0; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
     .rank-3 { background: #cd7f32; color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
-    .score-col { font-weight: 700; color: #333; background-color: #f9fbfc; }
-    .sub-score-col { font-size: 0.9rem; color: #666; }
+    .tag-model-type { font-size: 0.7rem; padding: 0 6px; height: 1.6em; margin-left: 5px; }
+
+    /* Visibility */
+    .leaderboard-table-wrapper { display: none; animation: fadeIn 0.3s ease-in-out; }
+    .leaderboard-table-wrapper.is-active { display: block; }
 
     /* --- Case Studies --- */
     .case-study-container { margin-top: 30px; min-height: 400px; }
@@ -110,6 +133,10 @@
     /* 针对超大屏幕，如果您想更宽，可以解开下面的注释 */
     @media screen and (min-width: 1408px) {
       .container.is-wide { max-width: 1344px !important; }
+    }
+    /* 针对平板/小屏幕，自动回退到流式布局，防止溢出 */
+    @media screen and (max-width: 1450px) {
+      .container.is-wide { max-width: 95% !important; width: auto; }
     }
   </style>
 </head>
@@ -369,39 +396,110 @@
 </section>
 
 <section class="section hero is-light" id="leaderboard">
-  <!-- <div class="container is-max-desktop animate-box"> -->
   <div class="container is-wide animate-box">
     <h2 class="title is-3 has-text-centered">🏆 Leaderboard</h2>
     
     <div class="leaderboard-container hover-shadow">
+      
+      <div class="lang-switch">
+        <span style="margin-right: 10px; display:flex; align-items:center; font-weight:bold; color:#666;">Dataset Language:</span>
+        <button class="lang-btn is-active" onclick="switchLang('en')" id="btn-en">🇺🇸 English</button>
+        <button class="lang-btn" onclick="switchLang('zh')" id="btn-zh">🇨🇳 Chinese</button>
+      </div>
+
       <div class="tabs is-centered is-boxed is-toggle is-toggle-rounded custom-tabs">
         <ul>
-          <li class="is-active" onclick="switchLbTab('de')" id="lb-tab-de">
-            <a><span class="icon is-small"><i class="fas fa-tools"></i></span><span>Data Engineering (DE)</span></a>
+          <li class="is-active" onclick="switchLbTab('arch')" id="lb-tab-arch">
+            <a><span class="icon is-small"><i class="fas fa-sitemap"></i></span><span>DE: Architecture</span></a>
+          </li>
+          <li onclick="switchLbTab('impl')" id="lb-tab-impl">
+            <a><span class="icon is-small"><i class="fas fa-code"></i></span><span>DE: Implementation</span></a>
+          </li>
+          <li onclick="switchLbTab('evol')" id="lb-tab-evol">
+            <a><span class="icon is-small"><i class="fas fa-sync-alt"></i></span><span>DE: Evolution</span></a>
           </li>
           <li onclick="switchLbTab('da')" id="lb-tab-da">
-            <a><span class="icon is-small"><i class="fas fa-chart-pie"></i></span><span>Data Analysis (DA)</span></a>
+            <a><span class="icon is-small"><i class="fas fa-chart-pie"></i></span><span>Data Analysis</span></a>
           </li>
         </ul>
       </div>
 
-      <div id="table-de" class="leaderboard-table-wrapper is-active">
+      <div id="table-arch" class="leaderboard-table-wrapper is-active">
         <table class="table is-fullwidth is-hoverable">
           <thead>
             <tr>
               <th width="5%">Rank</th><th>Model</th><th>Framework</th>
-              <th class="has-text-centered score-col" style="background:#fff8e1;">🛠️ DE Score</th>
-              <th class="has-text-centered sub-score-col"><i class="fas fa-sitemap"></i> Arch</th>
-              <th class="has-text-centered sub-score-col"><i class="fas fa-code"></i> Impl</th>
-              <th class="has-text-centered sub-score-col"><i class="fas fa-sync-alt"></i> Evol</th>
+              <th class="has-text-centered score-col" style="background:#f3e5f5;">Architecture Score</th>
+              <th>Type</th>
             </tr>
           </thead>
-          <tbody>
-            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>Baseline</td><td class="has-text-centered score-col">46.08</td><td class="has-text-centered">67.47</td><td class="has-text-centered">51.50</td><td class="has-text-centered">27.94</td></tr>
-            <tr><td><span class="rank-2">2</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">45.95</td><td class="has-text-centered">66.44</td><td class="has-text-centered">51.38</td><td class="has-text-centered">28.87</td></tr>
-            <tr><td><span class="rank-3">3</span></td><td>Claude-4-Sonnet</td><td>Baseline</td><td class="has-text-centered score-col">45.76</td><td class="has-text-centered">60.96</td><td class="has-text-centered">47.24</td><td class="has-text-centered">25.36</td></tr>
-            <tr><td>4</td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">44.80</td><td class="has-text-centered">64.55</td><td class="has-text-centered">50.17</td><td class="has-text-centered">30.78</td></tr>
-            <tr><td>5</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">43.17</td><td class="has-text-centered">55.31</td><td class="has-text-centered">50.66</td><td class="has-text-centered">28.65</td></tr>
+          <tbody class="content-en">
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">66.44</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>o3</b></td><td>OpenHands</td><td class="has-text-centered score-col">64.55</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Claude-4-Sonnet</td><td>OpenHands</td><td class="has-text-centered score-col">63.70</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>4</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">58.05</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>5</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">55.82</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+          </tbody>
+          <tbody class="content-zh" style="display:none;">
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">61.44</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>o3</b></td><td>OpenHands</td><td class="has-text-centered score-col">54.77</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">53.54</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>4</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">52.07</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>5</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">51.22</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="table-impl" class="leaderboard-table-wrapper">
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th width="5%">Rank</th><th>Model</th><th>Framework</th>
+              <th class="has-text-centered score-col" style="background:#e3f2fd;">CFS Score</th>
+              <th class="has-text-centered">Success Rate (SR)</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody class="content-en">
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">51.38</td><td class="has-text-centered">22.22%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>Qwen3-Coder</b></td><td>OpenHands</td><td class="has-text-centered score-col">50.66</td><td class="has-text-centered">5.56%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">50.17</td><td class="has-text-centered">38.89%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>4</td><td>Claude-4-Sonnet</td><td>OpenHands</td><td class="has-text-centered score-col">48.02</td><td class="has-text-centered">19.44%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>5</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">41.85</td><td class="has-text-centered">11.11%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+          </tbody>
+          <tbody class="content-zh" style="display:none;">
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">33.74</td><td class="has-text-centered">--</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>Qwen3-Coder</b></td><td>OpenHands</td><td class="has-text-centered score-col">26.24</td><td class="has-text-centered">--</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">14.31</td><td class="has-text-centered">--</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>4</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">9.68</td><td class="has-text-centered">--</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>5</td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">3.97</td><td class="has-text-centered">--</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="table-evol" class="leaderboard-table-wrapper">
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th width="5%">Rank</th><th>Model</th><th>Framework</th>
+              <th class="has-text-centered score-col" style="background:#fbe9e7;">CFS Score</th>
+              <th class="has-text-centered">Success Rate (SR)</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody class="content-en">
+            <tr><td><span class="rank-1">1</span></td><td><b>o3</b></td><td>OpenHands</td><td class="has-text-centered score-col">30.78</td><td class="has-text-centered">13.16%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">28.87</td><td class="has-text-centered">14.47%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">28.65</td><td class="has-text-centered">6.25%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>4</td><td>Claude-4-Sonnet</td><td>OpenHands</td><td class="has-text-centered score-col">28.34</td><td class="has-text-centered">11.84%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>5</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">26.67</td><td class="has-text-centered">9.21%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+          </tbody>
+          <tbody class="content-zh" style="display:none;">
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">36.77</td><td class="has-text-centered">20.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>Qwen3-Coder</b></td><td>OpenHands</td><td class="has-text-centered score-col">25.89</td><td class="has-text-centered">12.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">23.81</td><td class="has-text-centered">4.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>4</td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">23.14</td><td class="has-text-centered">6.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>5</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">22.32</td><td class="has-text-centered">8.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -410,21 +508,59 @@
         <table class="table is-fullwidth is-hoverable">
           <thead>
             <tr>
-              <th width="5%">Rank</th><th>Model</th><th>Framework</th>
-              <th class="has-text-centered score-col" style="background:#effaf5;">📊 DA Score</th>
-              <th class="has-text-centered sub-score-col">Rubric Score</th>
-              <th class="has-text-centered sub-score-col">GSB Score</th>
+              <th width="5%">Rank</th>
+              <th>Model</th>
+              <th>Framework</th>
+              <th class="has-text-centered score-col" style="background:#e8f5e9;">📊 DA Score</th>
+              <th>Type</th>
             </tr>
           </thead>
-          <tbody>
-            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b> <span class="tag is-dark is-light is-rounded is-small">Proprietary</span></td><td>Baseline</td><td class="has-text-centered score-col">56.79</td><td class="has-text-centered">55.90</td><td class="has-text-centered">60.36</td></tr>
-            <tr><td><span class="rank-2">2</span></td><td><b>GPT-5</b> <span class="tag is-dark is-light is-rounded is-small">Proprietary</span></td><td>OpenHands</td><td class="has-text-centered score-col">52.06</td><td class="has-text-centered">52.97</td><td class="has-text-centered">48.40</td></tr>
-            <tr><td><span class="rank-3">3</span></td><td>Claude-4-Sonnet</td><td>OpenHands</td><td class="has-text-centered score-col">51.33</td><td class="has-text-centered">48.87</td><td class="has-text-centered">61.20</td></tr>
-            <tr><td>4</td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">48.78</td><td class="has-text-centered">46.95</td><td class="has-text-centered">56.10</td></tr>
-            <tr><td>5</td><td>DeepSeek-V3.1 <span class="tag is-info is-light is-rounded is-small">Open</span></td><td>OpenHands</td><td class="has-text-centered score-col">45.79</td><td class="has-text-centered">43.50</td><td class="has-text-centered">54.98</td></tr>
+          <tbody class="content-en">
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">52.06</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>Claude-4-Sonnet</b></td><td>OpenHands</td><td class="has-text-centered score-col">51.33</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">48.78</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>4</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">45.79</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>5</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">41.88</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+          </tbody>
+          <tbody class="content-zh" style="display:none;">
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">44.25</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>o3</b></td><td>OpenHands</td><td class="has-text-centered score-col">40.11</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">32.13</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>4</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">30.01</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>5</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">28.38</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
           </tbody>
         </table>
+        <p class="help has-text-centered" style="margin-top: 10px; color: #888;">
+          * [cite_start]DA Score is an aggregate metric assessing Accuracy, Insightfulness, and Completeness [cite: 108-109].
+        </p>
       </div>
+
+      <!-- <div id="table-da" class="leaderboard-table-wrapper">
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th width="5%">Rank</th><th>Model</th><th>Framework</th>
+              <th class="has-text-centered score-col" style="background:#e8f5e9;">📊 DA Score</th>
+              <th class="has-text-centered">Rubric Score</th>
+              <th class="has-text-centered">GSB Score</th>
+            </tr>
+          </thead>
+          <tbody class="content-en">
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">52.06</td><td class="has-text-centered">52.97</td><td class="has-text-centered">48.40</td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>Claude-4-Sonnet</b></td><td>OpenHands</td><td class="has-text-centered score-col">51.33</td><td class="has-text-centered">48.87</td><td class="has-text-centered">61.20</td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">48.78</td><td class="has-text-centered">46.95</td><td class="has-text-centered">56.10</td></tr>
+            <tr><td>4</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">45.79</td><td class="has-text-centered">43.50</td><td class="has-text-centered">54.98</td></tr>
+            <tr><td>5</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">41.88</td><td class="has-text-centered">43.50</td><td class="has-text-centered">35.40</td></tr>
+          </tbody>
+          <tbody class="content-zh" style="display:none;">
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">44.25</td><td class="has-text-centered">--</td><td class="has-text-centered">--</td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>o3</b></td><td>OpenHands</td><td class="has-text-centered score-col">40.11</td><td class="has-text-centered">--</td><td class="has-text-centered">--</td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">32.13</td><td class="has-text-centered">--</td><td class="has-text-centered">--</td></tr>
+            <tr><td>4</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">30.01</td><td class="has-text-centered">--</td><td class="has-text-centered">--</td></tr>
+            <tr><td>5</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">28.38</td><td class="has-text-centered">--</td><td class="has-text-centered">--</td></tr>
+          </tbody>
+        </table>
+      </div> -->
 
     </div>
   </div>
@@ -477,17 +613,43 @@
 
 <script>
   // --- Leaderboard Logic ---
+  let currentLbTask = 'arch'; // Default task
+  let currentLbLang = 'en';   // Default language
+
+  // 1. Switch Task Tab
   function switchLbTab(tabName) {
-    document.getElementById('lb-tab-de').classList.remove('is-active');
-    document.getElementById('lb-tab-da').classList.remove('is-active');
+    currentLbTask = tabName;
+    
+    // Reset Tabs UI
+    document.querySelectorAll('.custom-tabs li').forEach(li => li.classList.remove('is-active'));
     document.getElementById('lb-tab-' + tabName).classList.add('is-active');
 
-    document.getElementById('table-de').classList.remove('is-active');
-    document.getElementById('table-da').classList.remove('is-active');
+    // Show Table
+    document.querySelectorAll('.leaderboard-table-wrapper').forEach(el => el.classList.remove('is-active'));
     document.getElementById('table-' + tabName).classList.add('is-active');
   }
-  // Default to DE
-  switchLbTab('de');
+
+  // 2. Switch Language
+  function switchLang(lang) {
+    currentLbLang = lang;
+
+    // Reset Buttons UI
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('is-active'));
+    document.getElementById('btn-' + lang).classList.add('is-active');
+
+    // Toggle Table Content
+    if (lang === 'en') {
+      document.querySelectorAll('.content-en').forEach(el => el.style.display = '');
+      document.querySelectorAll('.content-zh').forEach(el => el.style.display = 'none');
+    } else {
+      document.querySelectorAll('.content-en').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.content-zh').forEach(el => el.style.display = '');
+    }
+  }
+
+  // Initialize
+  switchLbTab('arch');
+  switchLang('en');
 
   // --- Case Study Logic ---
   function switchMainCase(caseId) {
