@@ -110,9 +110,72 @@
     /* Animation for sub-cases */
     .sub-case-content { display: none; animation: fadeIn 0.3s; }
     .sub-case-content.is-active { display: block; }
+
+    /* Navbar Customization */
+    body { padding-top: 3.25rem; } /* 防止内容被导航栏遮挡 */
+    
+    .navbar { 
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+      border-bottom: 1px solid #eee;
+    }
+    .navbar-brand {
+      padding-left: 20px; /* 左侧留白 */
+      align-items: center;
+      display: flex;
+    }
+    .navbar-logo-img {
+      max-height: 2.0rem; /* Logo 大小控制 */
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .navbar-title {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #333;
+      font-family: 'Google Sans', sans-serif;
+    }
+    .navbar-menu {
+      padding-right: 20px; /* 右侧留白 */
+    }
   </style>
 </head>
 <body>
+
+<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="#">
+      <img src="./images/dacomp_logo.png" class="navbar-logo-img" alt="DAComp Logo">
+      <span class="navbar-title">DAComp</span>
+    </a>
+
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-end">
+      <a class="navbar-item" href="#">Overview</a>
+      <a class="navbar-item" href="#case-studies">Case Studies</a> <a class="navbar-item" href="#leaderboard">Leaderboard</a> <a class="navbar-item" href="#analysis">Analysis</a>
+      <a class="navbar-item" href="#BibTeX">BibTeX</a>
+      
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-dark is-small is-rounded" href="https://github.com/anonymous/DAComp">
+            <span class="icon"><i class="fab fa-github"></i></span>
+            <span>Code</span>
+          </a>
+          <a class="button is-dark is-small is-rounded" href="https://arxiv.org/abs/XXXX.XXXXX">
+            <span class="icon"><i class="fas fa-file-pdf"></i></span>
+            <span>Paper</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
 
 <section class="hero">
   <div class="hero-body">
@@ -120,11 +183,9 @@
       <div class="columns is-centered">
         <div class="column has-text-centered">
           
-          <div class="has-text-centered" style="margin-bottom: 20px;">
-            <img src="./images/dacomp_logo.png" alt="DAComp Logo" style="width: 120px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-          </div>
-
-          <h1 class="title publication-title">DAComp: Benchmarking Data Agents across the Full Data Intelligence Lifecycle</h1>
+          <h1 class="title publication-title" style="margin-top: 20px;">
+            DAComp: Benchmarking Data Agents across the Full Data Intelligence Lifecycle
+          </h1>
           
           <div class="is-size-5 publication-authors">
             <span class="author-block">Fangyu Lei<sup>1,2,3*§</sup>,</span>
@@ -132,7 +193,8 @@
             <span class="author-block">Yiming Huang<sup>5</sup>,</span>
             <span class="author-block">Junjie Zhao<sup>3</sup>,</span>
             <span class="author-block">Yitong Zhang<sup>6</sup>,</span>
-            <br> <span class="author-block">Jianwen Luo<sup>1,2</sup>,</span>
+            <br>
+            <span class="author-block">Jianwen Luo<sup>1,2</sup>,</span>
             <span class="author-block">Xin Zou<sup>3</sup>,</span>
             <span class="author-block">Ruiyi Yang<sup>3</sup>,</span>
             <span class="author-block">Wenbo Shi<sup>3</sup>,</span>
@@ -162,7 +224,7 @@
             <span class="author-block"><sup>†</sup>Corresponding authors</span>
           </div>
 
-          <div class="column has-text-centered" style="margin-top: 10px;">
+          <div class="column has-text-centered" style="margin-top: 20px;">
             <div class="publication-links">
               <span class="link-block">
                 <a href="https://arxiv.org/abs/XXXX.XXXXX" class="button is-normal is-rounded is-dark">
@@ -179,7 +241,7 @@
               <span class="link-block">
                 <a href="#" class="button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-database"></i></span>
-                  <span>Dataset</span>
+                  <span>Data</span>
                 </a>
               </span>
             </div>
@@ -195,7 +257,7 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <img src="./static/images/figure1_placeholder.png" alt="DAComp Overview" style="width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+        <img src="./images/main.png" alt="DAComp Overview" style="width: 100%; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
         <h2 class="subtitle has-text-centered" style="margin-top: 15px;">
           DAComp evaluates agents on <b>Repository-level Data Engineering (DE)</b> and <b>Open-ended Data Analysis (DA)</b>.
         </h2>
@@ -705,6 +767,21 @@
     parent.querySelectorAll('.sub-nav-btn').forEach(btn => btn.classList.remove('is-active'));
     btnElement.classList.add('is-active');
   }
+
+  // Mobile Navbar Burger
+  document.addEventListener('DOMContentLoaded', () => {
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+    if ($navbarBurgers.length > 0) {
+      $navbarBurgers.forEach( el => {
+        el.addEventListener('click', () => {
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+          el.classList.toggle('is-active');
+          $target.classList.toggle('is-active');
+        });
+      });
+    }
+  });
 </script>
 
 </body>
