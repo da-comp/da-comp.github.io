@@ -1,0 +1,4 @@
+/Users/bytedance/workspace/da-comp.github.io/bower_components/scrollreveal/README.md, line, 30 have some sensitive information: npm install scrollreveal`
+/Users/bytedance/workspace/da-comp.github.io/bower_components/scrollreveal/README.md, line, 152 have some sensitive information: a7dda6c6-e3e2-11e5-93fa-d6a227cbb5dc
+/Users/bytedance/workspace/da-comp.github.io/bower_components/fluidbox/README.md, line, 295 have some sensitive information: npm install` and install the following de
+/Users/bytedance/workspace/da-comp.github.io/static/videos/main-v6.mp4, line, 305977 have some sensitive information: 0f8740d5-9f4e-4022-97a1-e6d15f7b7f86
