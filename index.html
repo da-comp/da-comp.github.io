@@ -113,7 +113,7 @@
     }
     .da-report-paper h1 { font-size: 2rem; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
     .da-report-paper h2 { font-size: 1.4rem; font-weight: bold; color: #444; margin-top: 30px; margin-bottom: 10px; border-left: 4px solid #333; padding-left: 10px; }
-    .report-chart { border: 1px solid #eee; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .report-chart { border: 1px solid #eee; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); width: 100%; max-width: 900px; margin: 14px auto; display: block; }
 
     /* Utility: Hidden/Active Logic */
     .leaderboard-table-wrapper, .case-content, .sub-case-content, .main-case-content { display: none; animation: fadeIn 0.4s ease-out; }
@@ -400,35 +400,134 @@
 
       <div id="da-case" class="main-case-content" style="display:none;">
         <div class="sub-nav-container">
-          <button class="sub-nav-btn is-active" onclick="switchDaSub('da-ex-1', this)"><i class="fas fa-globe-americas"></i> Regional Analysis</button>
-          <button class="sub-nav-btn" onclick="switchDaSub('da-ex-2', this)"><i class="fas fa-users-slash"></i> Churn Study</button>
-          <button class="sub-nav-btn" onclick="switchDaSub('da-ex-3', this)"><i class="fas fa-chart-bar"></i> Sales Forecast</button>
+          <button class="sub-nav-btn is-active" onclick="switchDaSub('da-ex-dacomp-001', this)"><i class="fas fa-coins"></i> SME Credit Allocation</button>
+          <button class="sub-nav-btn" onclick="switchDaSub('da-ex-dacomp-021', this)"><i class="fas fa-car-side"></i> Ride Peaks Analysis</button>
+          <button class="sub-nav-btn" onclick="switchDaSub('da-ex-dacomp-057', this)"><i class="fas fa-bullhorn"></i> Ads Decay Risk</button>
+          <button class="sub-nav-btn" onclick="switchDaSub('da-ex-dacomp-090', this)"><i class="fas fa-exclamation-triangle"></i> Payment Risk Alert</button>
         </div>
 
-        <div id="da-ex-1" class="sub-case-content is-active">
-          <div class="da-input-card"><p><b>User Question:</b> "Analyze penetration rate and profitability across four regions."</p></div>
+        <div id="da-ex-dacomp-001" class="sub-case-content is-active">
+          <div class="da-input-card"><p><b>User Question:</b> Credit risk and RMB 100M allocation with churn-aware limits/rates across SME ratings.</p></div>
           <div class="da-report-paper hover-shadow">
-            <h1>Regional Performance Report</h1>
-            <p>Based on sales data, the <b>East</b> region dominates with a 35% penetration rate.</p>
-            <img class="report-chart" src="./static/images/da_chart_example_1.png" alt="Chart">
+            <h1>Executive summary</h1>
+            <ul>
+              <li>Deploy 100M RMB: A 70.97M @4.65%, B 13.32M @5.05%, C 15.70M @5.45%; D excluded. Offer 120.23M to land 100M after churn.</li>
+              <li>Default ladder: A 0.00%, B 2.63%, C 5.88%, D 100%; revenue capacity and stability favor overweighting A.</li>
+              <li>Expected net profit ≈ 3.44M RMB (LGD 45%, PD observed).</li>
+            </ul>
+            <h2>Visual evidence</h2>
+            <img class="report-chart" src="./case-reports/dacomp-001/default_rate_by_rating.png" alt="Default rate by rating">
+            <img class="report-chart" src="./case-reports/dacomp-001/risk_scatter.png" alt="Dependency vs profit volatility">
+            <img class="report-chart" src="./case-reports/dacomp-001/churn_vs_rate.png" alt="Churn vs interest rate">
+            <h2>Data and method</h2>
+            <ul>
+              <li>Tables: company_info, sales_invoices, input_invoices, annual_rate_&_churn.</li>
+              <li>Metrics: revenue capacity (avg monthly sales), profit CV, dependency HHI, default by rating, churn curve by rate.</li>
+            </ul>
+            <h2>Key insights</h2>
+            <ol>
+              <li>Default risk escalates sharply by rating; exclude D or fully collateralize.</li>
+              <li>A-rated: strongest revenue and diversified supply chain → prioritize exposure.</li>
+              <li>Volatility and concentration amplify B/C risk → penalize HHI >0.50 or CV >2.0 with tighter covenants.</li>
+            </ol>
+            <h2>Credit allocation rules</h2>
+            <ul>
+              <li>Limit = 30% × Avg Monthly Sales × rating factor (A1.20/B1.00/C0.70/D0) × stability factor (by CV) × dependency factor (HHI-based, floored 0.60).</li>
+              <li>Rates: base A 4.65% / B 5.05% / C 5.45% with CV and HHI add-ons; churn-adjusted offers = deploy / (1 − churn).</li>
+            </ul>
+            <p class="is-size-7 has-text-grey">Source: case-reports/dacomp-001/dacomp-001_gsb_ref_2.md</p>
           </div>
         </div>
 
-        <div id="da-ex-2" class="sub-case-content">
-          <div class="da-input-card"><p><b>User Question:</b> "Identify factors driving customer churn in Q3."</p></div>
+        <div id="da-ex-dacomp-021" class="sub-case-content">
+          <div class="da-input-card"><p><b>User Question:</b> Identify ride booking peaks/troughs in 2024, analyze cancellation and cost per km, and give operational actions.</p></div>
           <div class="da-report-paper hover-shadow">
-            <h1>Churn Diagnostic</h1>
-            <p>High correlation found between <b>response time > 24h</b> and churn.</p>
-            <img class="report-chart" src="./static/images/da_chart_example_1.png" alt="Chart">
+            <h1>Uber Ride Booking Analysis: Peaks, Troughs & Actions</h1>
+            <h2>Executive Summary</h2>
+            <p>150k rides (2024-01-01 to 09-09) show a 4.5x peak-to-trough swing (18:00 vs 23:00) with stable ~25% cancellation.</p>
+            <h2>Hourly and daily patterns</h2>
+            <img class="report-chart" src="./case-reports/dacomp-021/hourly_booking_patterns.png" alt="Hourly booking patterns">
+            <p>Peak 18:00 (12,397 bookings); trough 23:00 (2,762). Business: supply-demand imbalance.</p>
+            <img class="report-chart" src="./case-reports/dacomp-021/daily_booking_patterns.png" alt="Daily booking patterns">
+            <p>Peak day Nov 16 (306) vs trough May 2 (198). Weekend cost/km higher (43+) vs weekday (28-30).</p>
+            <h2>Vehicle performance</h2>
+            <img class="report-chart" src="./case-reports/dacomp-021/comprehensive_analysis.png" alt="Vehicle and status breakdown">
+            <p>Auto/Go Mini dominate share; completion 61-63% across vehicle types; cancellations stable across hours.</p>
+            <h2>Operational recommendations</h2>
+            <ul>
+              <li>Dynamic driver allocation: pre-position +40% for 17:00-19:00; trim 23:00-05:00.</li>
+              <li>Surge tuning: stronger 18:00-20:00 multipliers; keep weekday base steady, lean into weekend premium.</li>
+              <li>Cancellation management: predictive flags, better ETA accuracy, proactive alternatives.</li>
+              <li>Vehicle mix: raise Auto/Go Mini during peaks; reserve premium for weekend/high-value slots.</li>
+            </ul>
+            <p class="is-size-7 has-text-grey">Source: case-reports/dacomp-021/dacomp-021_gsb_ref_3.md</p>
           </div>
         </div>
 
-        <div id="da-ex-3" class="sub-case-content">
-          <div class="da-input-card"><p><b>User Question:</b> "Forecast Q4 revenue based on current pipeline velocity."</p></div>
+        <div id="da-ex-dacomp-057" class="sub-case-content">
+          <div class="da-input-card"><p><b>User Question:</b> Find >120-day campaigns with CAC +25% and LTV/CAC -20% last 30 days; analyze decay by lifecycle/channel/maturity and recommend fixes.</p></div>
           <div class="da-report-paper hover-shadow">
-            <h1>Q4 Revenue Forecast</h1>
-            <p>Projected revenue is <b>$4.2M</b>, assuming current conversion rates hold.</p>
-            <img class="report-chart" src="./static/images/da_chart_example_1.png" alt="Chart">
+            <h1>Customer Acquisition Efficiency Decay (Google Ads)</h1>
+            <h2>Data and scope</h2>
+            <ul>
+              <li>Tables: google_ads__campaign_report, google_ads__customer_acquisition_analysis.</li>
+              <li>Window: 2024-01-03 to 2024-12-31; runtime >120 days; decay if CAC growth >25% and LTV/CAC change < -20%.</li>
+            </ul>
+            <h2>Flagged set</h2>
+            <ul>
+              <li>10 campaigns (High 8, Medium 2); avg CAC growth +176.7%, avg LTV/CAC change -93.5%; composite risk mean 0.778.</li>
+              <li>Examples: CMP_ACC_FIN_001_008 (Shopping) CAC +636%, LTV/CAC -100%; CMP_ACC_GAME_001_008 (Video) CAC +72%, LTV/CAC -80.7%; etc.</li>
+            </ul>
+            <h2>Decay patterns</h2>
+            <ul>
+              <li>Channels: Video/Display show steep inflation and LTV/CAC collapse; Shopping also impacted.</li>
+              <li>Lifecycle: Decline-stage worst; Unknown treated as Mature/Decline.</li>
+              <li>Maturity: Mature accounts decaying → audience exhaustion and saturation.</li>
+            </ul>
+            <img class="report-chart" src="./case-reports/dacomp-057/risk_heatmap_channel_lifecycle.png" alt="Risk heatmap by channel and lifecycle">
+            <img class="report-chart" src="./case-reports/dacomp-057/high_risk_segment_distribution.png" alt="High-risk segment distribution">
+            <h2>Recommendations</h2>
+            <ul>
+              <li>Budget triage: cut 20-35% from High-risk Video/Display with LTV/CAC <1; reallocate 15-25% to Growth/low-risk Search or stronger remarketing.</li>
+              <li>Lifecycle resets: new creatives + exclusions for Video; tighter placements and value-based bidding for Display; feed/query sculpting for Shopping.</li>
+              <li>Targeting: boost VIP/High Value B2B; suppress low-value cohorts; segment by intent/recency.</li>
+              <li>Guardrails: weekly decay dashboard; pause if CAC growth >50% WoW with LTV/CAC <1.2; alerts when efficiency percentile <35 two weeks.</li>
+            </ul>
+            <p class="is-size-7 has-text-grey">Source: case-reports/dacomp-057/dacomp-057_gsb_ref_1.md</p>
+          </div>
+        </div>
+
+        <div id="da-ex-dacomp-090" class="sub-case-content">
+          <div class="da-input-card"><p><b>User Question:</b> Filter payment_rate_percentage <75% and outstanding_balance >15,000; score risk, profit share, 12-month collection trend, distribution vs normal, 6-month warning, and tiered controls.</p></div>
+          <div class="da-report-paper hover-shadow">
+            <h1>Customer Payment Risk Deep-Dive</h1>
+            <h2>Executive summary</h2>
+            <ul>
+              <li>High-risk cohort: 399 customers; avg risk score 53.65 (top >70).</li>
+              <li>Profit impact: 13.81% of total gross profit loss (cohort -$345.46M vs total -$2.50B).</li>
+              <li>Collections: 3-month deterioration, -5.78 pp; 12-month change -1.35 pp.</li>
+              <li>6-month warning: base/worst-case show $0 shortfall in provided forecasts (risk_adjusted_inflows == forecasted_inflows).</li>
+            </ul>
+            <div class="stat-block">
+              <p><strong>Key metrics</strong></p>
+              <ul>
+                <li>Filter: payment_rate_percentage <75% AND outstanding_balance >15,000.</li>
+                <li>Risk Score = (100 - payment_rate_percentage) ×0.4 + ((850 - credit_score)/850×100) ×0.4 + (100 - business_stability_score) ×0.2.</li>
+                <li>Median lifespan 894 vs 940 (normal); avg_invoice_amount 15,714 vs 15,365.</li>
+              </ul>
+            </div>
+            <h2>Visual evidence</h2>
+            <img class="report-chart" src="./case-reports/dacomp-090/risk_collection_and_distribution.png" alt="Collection trend and distributions">
+            <img class="report-chart" src="./case-reports/dacomp-090/cashflow_risk_scenarios.png" alt="Cashflow risk scenarios">
+            <h2>Recommendations</h2>
+            <ul>
+              <li>Extreme (>=75): hold orders; require deposits/LoCs; shorten terms; enforce late fees; rapid outreach.</li>
+              <li>High (60-75): reduce limits; autopay; early-pay discounts; weekly monitoring.</li>
+              <li>Medium (45-60): proactive dunning; reminders; PO validation.</li>
+              <li>Low (<45): maintain terms; loyalty incentives.</li>
+              <li>Portfolio: prioritize collections by risk × outstanding_balance; stress-test cash at -5%/-10%/-20% collection shocks.</li>
+            </ul>
+            <p class="is-size-7 has-text-grey">Source: case-reports/dacomp-090/dacomp-090_gsb_ref_1.md</p>
           </div>
         </div>
       </div>
