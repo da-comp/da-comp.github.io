@@ -127,6 +127,34 @@
       .de-grid-images { grid-template-columns: 1fr; } /* Stack images on mobile */
     }
 
+        /* --- Scenario Text Styling --- */
+    .scenario-box {
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, #fdfdfd, #fff);
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      border-left: 5px solid #dbdbdb; /* Default color */
+    }
+    
+    .scenario-box h4 {
+      display: flex;
+      align-items: center;
+      color: #333;
+      margin-bottom: 0.5rem !important;
+    }
+    
+    .scenario-box h4 .icon {
+      margin-right: 10px;
+      opacity: 0.8;
+    }
+
+    /* Custom Colors for DE Tasks */
+    .scenario-box.is-arch { border-left-color: #8e44ad; background: linear-gradient(to right, #fbf5ff, #fff); } /* Purple */
+    .scenario-box.is-impl { border-left-color: #2980b9; background: linear-gradient(to right, #f0f8ff, #fff); } /* Blue */
+    .scenario-box.is-evol { border-left-color: #d35400; background: linear-gradient(to right, #fff5f0, #fff); } /* Orange */
+
+
     /* --- Leaderboard Table Tweaks --- */
 
     /* 1. 外层容器：允许横向滚动 */
@@ -292,7 +320,7 @@
                 </a>
               </span>
               <span class="link-block">
-                <a href="#" class="button is-normal is-rounded is-dark">
+                <a href="https://huggingface.co/DAComp" class="button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-database"></i></span><span>Data</span>
                 </a>
               </span>
@@ -313,7 +341,7 @@
         <h2 class="title is-3">Overview</h2>
         <div class="content has-text-justified">
           <p>
-            Real-world enterprise data intelligence workflows encompass <b>data engineering (DE)</b> that turns raw sources into analytical-ready tables and <b>data analysis (DA)</b> that converts those tables into decision-oriented insights. We introduce <b>DAComp</b>, a benchmark of <b>236 tasks</b> that mirrors these complex workflows.
+            Real-world enterprise data intelligence workflows encompass <b>data engineering (DE)</b> that turns raw sources into analytical-ready tables and <b>data analysis (DA)</b> that converts those tables into decision-oriented insights. We introduce <b>DAComp</b>, a benchmark of <b>210 tasks</b> that mirrors these complex workflows.
           </p>
           <p>
             <b>Data Engineering (DE)</b> tasks require repository-level engineering on industrial schemas, including designing and building multi-stage SQL pipelines. <b>Data Analysis (DA)</b> tasks pose open-ended business problems that demand strategic planning and insight synthesis. Our experiments reveal that even state-of-the-art agents falter, with DE success rates under 20% and DA scores averaging below 40%.
@@ -323,7 +351,6 @@
           <figure class="image">
             <img src="./images/main.png" alt="DAComp Overview">
             <figcaption class="has-text-centered mt-3 is-size-6 has-text-grey p-2">
-              <!-- <b>Figure 1:</b> DAComp evaluates agents on Repository-level Data Engineering (DE) and Open-ended Data Analysis (DA). -->
             </figcaption>
           </figure>
         </div>
@@ -332,21 +359,21 @@
   </div>
 </section>
 
+
 <section class="section" id="case-studies">
-  <!-- <div class="container is-max-desktop animate-box"> -->
   <div class="container is-wide animate-box">
     <h2 class="title is-3 has-text-centered">🧩 Case Studies</h2>
     <p class="subtitle has-text-centered is-size-6 has-text-grey">
-      Explore how agents handle challenges across the Hard Axis (Engineering) and Soft Axis (Analysis).
+      <!-- Explore how agents handle challenges across the Hard Axis (Engineering) and Soft Axis (Analysis). -->
     </p>
 
     <div class="tabs is-centered is-boxed is-toggle is-toggle-rounded" style="margin-top: 30px;">
       <ul>
         <li class="is-active" onclick="switchMainCase('de-case')" id="tab-case-de">
-          <a><span class="icon"><i class="fas fa-cogs"></i></span><span><b>DE:</b> Repository Engineering</span></a>
+          <a><span class="icon"><i class="fas fa-cogs"></i></span><span><b>DE:</b> Repository-level Data Engineering</span></a>
         </li>
         <li onclick="switchMainCase('da-case')" id="tab-case-da">
-          <a><span class="icon"><i class="fas fa-chart-line"></i></span><span><b>DA:</b> Insight Report</span></a>
+          <a><span class="icon"><i class="fas fa-chart-line"></i></span><span><b>DA:</b> Open-ended Data Analysis</span></a>
         </li>
       </ul>
     </div>
@@ -354,45 +381,85 @@
     <div class="case-study-container">
       
       <div id="de-case" class="main-case-content is-active">
+        
         <div class="sub-nav-container">
           <button class="sub-nav-btn is-active" onclick="switchDeSub('de-ex-1', this)">
-            <i class="fas fa-code-branch"></i> Example 1: Pipeline Evolution
+            <i class="fas fa-sitemap"></i> DE-Architecture
           </button>
           <button class="sub-nav-btn" onclick="switchDeSub('de-ex-2', this)">
-            <i class="fas fa-database"></i> Example 2: Migration (Multi-Image)
+            <i class="fas fa-code"></i> DE-Implementation
           </button>
           <button class="sub-nav-btn" onclick="switchDeSub('de-ex-3', this)">
-            <i class="fas fa-project-diagram"></i> Example 3: Architecture
+            <i class="fas fa-sync-alt"></i> DE-Evolution
           </button>
         </div>
 
         <div id="de-ex-1" class="sub-case-content is-active">
-          <div class="content mb-4"><h4 class="title is-5">Scenario: Adding Cost Allocation Logic</h4><p>Agent modifies a dbt project to add logic to <code>fct_sales_pipeline</code> without breaking dependencies.</p></div>
+          <div class="content scenario-box is-arch">
+            <h4 class="title is-5">
+              <span class="icon" style="color: #8e44ad;"><i class="fas fa-drafting-compass"></i></span>
+              Scenario: Designing a Data Warehouse Blueprint
+            </h4>
+            <p>
+              Given a vague business requirement, the agent must design a comprehensive <b>Architecture Blueprint</b>. 
+              This involves identifying necessary data sources, defining the grain for Staging/Intermediate/Marts layers, and specifying strict data contracts before writing any code.
+            </p>
+          </div>
           <div class="de-showcase">
             <div class="de-video-box hover-shadow">
-              <video controls loop muted style="width:100%; height:100%; object-fit:cover;"><source src="./static/videos/agent_coding_demo.mp4" type="video/mp4"></video>
+              <video controls loop muted playsinline style="width:100%; height:100%; object-fit:cover;">
+                <source src="./videos/de-arch.mp4" type="video/mp4">
+              </video>
             </div>
             <div class="de-image-box hover-shadow">
-              <img src="./static/images/figure14_pipeline_error.png" alt="Pipeline Error">
+              <img src="./images/de-arch.png" alt="Architecture Blueprint" style="max-height: 400px;">
             </div>
           </div>
         </div>
+      
 
         <div id="de-ex-2" class="sub-case-content">
-          <div class="content mb-4"><h4 class="title is-5">Scenario: Legacy SQL to dbt Migration</h4><p>Refactoring raw SQL scripts into modular Staging and Marts models.</p></div>
+          <div class="content scenario-box is-impl">
+            <h4 class="title is-5">
+              <span class="icon" style="color: #2980b9;"><i class="fas fa-layer-group"></i></span>
+              Scenario: Building Pipelines from Scratch
+            </h4>
+            <p>
+              The agent is tasked with building a <b>multi-layer SQL-based data pipeline</b> from zero. 
+              It must generate SQL files for Staging (cleaning), Intermediate (logic), and Marts (aggregation), ensuring all 30+ files pass compilation and data integrity tests.
+            </p>
+          </div>
           <div class="de-showcase">
-            <div class="de-grid-images">
-              <div class="de-image-box hover-shadow"><img src="./static/images/figure14_pipeline_error.png" alt="Before"></div>
-              <div class="de-image-box hover-shadow"><img src="./static/images/figure14_pipeline_error.png" alt="After"></div>
+            <div class="de-video-box hover-shadow">
+              <video controls loop muted playsinline style="width:100%; height:100%; object-fit:cover;">
+                <source src="./videos/de-impl.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="de-image-box hover-shadow">
+              <img src="./images/de-impl.png" alt="Implementation DAG" style="max-height: 400px;">
             </div>
           </div>
         </div>
 
         <div id="de-ex-3" class="sub-case-content">
-          <div class="content mb-4"><h4 class="title is-5">Scenario: Designing a Data Warehouse Architecture</h4><p>Creating a blueprint for a multi-layer data warehouse from business requirements.</p></div>
+          <div class="content scenario-box is-evol">
+            <h4 class="title is-5">
+              <span class="icon" style="color: #d35400;"><i class="fas fa-sync-alt"></i></span>
+              Scenario: Evolving Business Logic
+            </h4>
+            <p>
+              A new requirement demands evolving the existing pipeline. 
+              The agent must interpret the request, identify the impact scope, and <b>add or modify specific SQL files</b> to update the DAG without breaking existing dependencies.
+            </p>
+          </div>
           <div class="de-showcase">
-            <div class="de-image-box hover-shadow" style="width:100%">
-              <img src="./static/images/figure14_pipeline_error.png" alt="Architecture Diagram">
+            <div class="de-video-box hover-shadow">
+              <video controls loop muted playsinline style="width:100%; height:100%; object-fit:cover;">
+                <source src="./videos/de-evol.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="de-image-box hover-shadow">
+              <img src="./images/de-evol.png" alt="Evolution Pipeline" style="max-height: 400px;">
             </div>
           </div>
         </div>
@@ -537,6 +604,7 @@
 </section>
 
 
+
 <section class="section hero is-light" id="leaderboard">
   <div class="container is-wide animate-box">
     <h2 class="title is-3 has-text-centered">🏆 Leaderboard</h2>
@@ -545,8 +613,8 @@
       
       <div class="lang-switch">
         <span style="margin-right: 10px; display:flex; align-items:center; font-weight:bold; color:#666;">Dataset Language:</span>
-        <button class="lang-btn is-active" onclick="switchLang('en')" id="btn-en">🇺🇸 English</button>
-        <button class="lang-btn" onclick="switchLang('zh')" id="btn-zh">🇨🇳 Chinese</button>
+        <button class="lang-btn is-active" onclick="switchLang('en')" id="btn-en">English</button>
+        <button class="lang-btn" onclick="switchLang('zh')" id="btn-zh">Chinese</button>
       </div>
 
       <div class="tabs is-centered is-boxed is-toggle is-toggle-rounded custom-tabs">
