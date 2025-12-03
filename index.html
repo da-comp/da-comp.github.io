@@ -133,6 +133,34 @@
       .de-grid-images { grid-template-columns: 1fr; } /* Stack images on mobile */
     }
 
+        /* --- Scenario Text Styling --- */
+    .scenario-box {
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, #fdfdfd, #fff);
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      border-left: 5px solid #dbdbdb; /* Default color */
+    }
+    
+    .scenario-box h4 {
+      display: flex;
+      align-items: center;
+      color: #333;
+      margin-bottom: 0.5rem !important;
+    }
+    
+    .scenario-box h4 .icon {
+      margin-right: 10px;
+      opacity: 0.8;
+    }
+
+    /* Custom Colors for DE Tasks */
+    .scenario-box.is-arch { border-left-color: #8e44ad; background: linear-gradient(to right, #fbf5ff, #fff); } /* Purple */
+    .scenario-box.is-impl { border-left-color: #2980b9; background: linear-gradient(to right, #f0f8ff, #fff); } /* Blue */
+    .scenario-box.is-evol { border-left-color: #d35400; background: linear-gradient(to right, #fff5f0, #fff); } /* Orange */
+
+
     /* --- Leaderboard Table Tweaks --- */
 
     /* 1. 外层容器：允许横向滚动 */
@@ -205,7 +233,7 @@
       <a class="navbar-item" href="#">Overview</a>
       <a class="navbar-item" href="#case-studies">Case Studies</a> 
       <a class="navbar-item" href="#leaderboard">Leaderboard</a> 
-      <a class="navbar-item" href="#analysis">Analysis</a>
+      <!-- <a class="navbar-item" href="#analysis">Analysis</a> -->
       <a class="navbar-item" href="#BibTeX">BibTeX</a>
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
@@ -298,7 +326,7 @@
                 </a>
               </span>
               <span class="link-block">
-                <a href="#" class="button is-normal is-rounded is-dark">
+                <a href="https://huggingface.co/DAComp" class="button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-database"></i></span><span>Data</span>
                 </a>
               </span>
@@ -323,7 +351,7 @@
         <h2 class="title is-3">Overview</h2>
         <div class="content has-text-justified">
           <p>
-            Real-world enterprise data intelligence workflows encompass <b>data engineering (DE)</b> that turns raw sources into analytical-ready tables and <b>data analysis (DA)</b> that converts those tables into decision-oriented insights. We introduce <b>DAComp</b>, a benchmark of <b>236 tasks</b> that mirrors these complex workflows.
+            Real-world enterprise data intelligence workflows encompass <b>data engineering (DE)</b> that turns raw sources into analytical-ready tables and <b>data analysis (DA)</b> that converts those tables into decision-oriented insights. We introduce <b>DAComp</b>, a benchmark of <b>210 tasks</b> that mirrors these complex workflows.
           </p>
           <p>
             <b>Data Engineering (DE)</b> tasks require repository-level engineering on industrial schemas, including designing and building multi-stage SQL pipelines. <b>Data Analysis (DA)</b> tasks pose open-ended business problems that demand strategic planning and insight synthesis. Our experiments reveal that even state-of-the-art agents falter, with DE success rates under 20% and DA scores averaging below 40%.
@@ -333,7 +361,6 @@
           <figure class="image">
             <img src="./images/main.png" alt="DAComp Overview">
             <figcaption class="has-text-centered mt-3 is-size-6 has-text-grey p-2">
-              <!-- <b>Figure 1:</b> DAComp evaluates agents on Repository-level Data Engineering (DE) and Open-ended Data Analysis (DA). -->
             </figcaption>
           </figure>
         </div>
@@ -342,21 +369,21 @@
   </div>
 </section>
 
+
 <section class="section" id="case-studies">
-  <!-- <div class="container is-max-desktop animate-box"> -->
   <div class="container is-wide animate-box">
     <h2 class="title is-3 has-text-centered">🧩 Case Studies</h2>
     <p class="subtitle has-text-centered is-size-6 has-text-grey">
-      Explore how agents handle challenges across the Hard Axis (Engineering) and Soft Axis (Analysis).
+      <!-- Explore how agents handle challenges across the Hard Axis (Engineering) and Soft Axis (Analysis). -->
     </p>
 
     <div class="tabs is-centered is-boxed is-toggle is-toggle-rounded" style="margin-top: 30px;">
       <ul>
         <li class="is-active" onclick="switchMainCase('de-case')" id="tab-case-de">
-          <a><span class="icon"><i class="fas fa-cogs"></i></span><span><b>DE:</b> Repository Engineering</span></a>
+          <a><span class="icon"><i class="fas fa-cogs"></i></span><span><b>DE:</b> Repository-level Data Engineering</span></a>
         </li>
         <li onclick="switchMainCase('da-case')" id="tab-case-da">
-          <a><span class="icon"><i class="fas fa-chart-line"></i></span><span><b>DA:</b> Insight Report</span></a>
+          <a><span class="icon"><i class="fas fa-chart-line"></i></span><span><b>DA:</b> Open-ended Data Analysis</span></a>
         </li>
       </ul>
     </div>
@@ -364,45 +391,85 @@
     <div class="case-study-container">
       
       <div id="de-case" class="main-case-content is-active">
+        
         <div class="sub-nav-container">
           <button class="sub-nav-btn is-active" onclick="switchDeSub('de-ex-1', this)">
-            <i class="fas fa-code-branch"></i> Example 1: Pipeline Evolution
+            <i class="fas fa-sitemap"></i> DE-Architecture
           </button>
           <button class="sub-nav-btn" onclick="switchDeSub('de-ex-2', this)">
-            <i class="fas fa-database"></i> Example 2: Migration (Multi-Image)
+            <i class="fas fa-code"></i> DE-Implementation
           </button>
           <button class="sub-nav-btn" onclick="switchDeSub('de-ex-3', this)">
-            <i class="fas fa-project-diagram"></i> Example 3: Architecture
+            <i class="fas fa-sync-alt"></i> DE-Evolution
           </button>
         </div>
 
         <div id="de-ex-1" class="sub-case-content is-active">
-          <div class="content mb-4"><h4 class="title is-5">Scenario: Adding Cost Allocation Logic</h4><p>Agent modifies a dbt project to add logic to <code>fct_sales_pipeline</code> without breaking dependencies.</p></div>
+          <div class="content scenario-box is-arch">
+            <h4 class="title is-5">
+              <span class="icon" style="color: #8e44ad;"><i class="fas fa-drafting-compass"></i></span>
+              Scenario: Designing a Data Warehouse Blueprint
+            </h4>
+            <p>
+              Given a vague business requirement, the agent must design a comprehensive <b>Architecture Blueprint</b>. 
+              This involves identifying necessary data sources, defining the grain for Staging/Intermediate/Marts layers, and specifying strict data contracts before writing any code.
+            </p>
+          </div>
           <div class="de-showcase">
             <div class="de-video-box hover-shadow">
-              <video controls loop muted style="width:100%; height:100%; object-fit:cover;"><source src="./static/videos/agent_coding_demo.mp4" type="video/mp4"></video>
+              <video controls loop muted playsinline style="width:100%; height:100%; object-fit:cover;">
+                <source src="./videos/de-arch.mp4" type="video/mp4">
+              </video>
             </div>
             <div class="de-image-box hover-shadow">
-              <img src="./static/images/figure14_pipeline_error.png" alt="Pipeline Error">
+              <img src="./images/de-arch.png" alt="Architecture Blueprint" style="max-height: 400px;">
             </div>
           </div>
         </div>
+      
 
         <div id="de-ex-2" class="sub-case-content">
-          <div class="content mb-4"><h4 class="title is-5">Scenario: Legacy SQL to dbt Migration</h4><p>Refactoring raw SQL scripts into modular Staging and Marts models.</p></div>
+          <div class="content scenario-box is-impl">
+            <h4 class="title is-5">
+              <span class="icon" style="color: #2980b9;"><i class="fas fa-layer-group"></i></span>
+              Scenario: Building Pipelines from Scratch
+            </h4>
+            <p>
+              The agent is tasked with building a <b>multi-layer SQL-based data pipeline</b> from zero. 
+              It must generate SQL files for Staging (cleaning), Intermediate (logic), and Marts (aggregation), ensuring all 30+ files pass compilation and data integrity tests.
+            </p>
+          </div>
           <div class="de-showcase">
-            <div class="de-grid-images">
-              <div class="de-image-box hover-shadow"><img src="./static/images/figure14_pipeline_error.png" alt="Before"></div>
-              <div class="de-image-box hover-shadow"><img src="./static/images/figure14_pipeline_error.png" alt="After"></div>
+            <div class="de-video-box hover-shadow">
+              <video controls loop muted playsinline style="width:100%; height:100%; object-fit:cover;">
+                <source src="./videos/de-impl.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="de-image-box hover-shadow">
+              <img src="./images/de-impl.png" alt="Implementation DAG" style="max-height: 400px;">
             </div>
           </div>
         </div>
 
         <div id="de-ex-3" class="sub-case-content">
-          <div class="content mb-4"><h4 class="title is-5">Scenario: Designing a Data Warehouse Architecture</h4><p>Creating a blueprint for a multi-layer data warehouse from business requirements.</p></div>
+          <div class="content scenario-box is-evol">
+            <h4 class="title is-5">
+              <span class="icon" style="color: #d35400;"><i class="fas fa-sync-alt"></i></span>
+              Scenario: Evolving Business Logic
+            </h4>
+            <p>
+              A new requirement demands evolving the existing pipeline. 
+              The agent must interpret the request, identify the impact scope, and <b>add or modify specific SQL files</b> to update the DAG without breaking existing dependencies.
+            </p>
+          </div>
           <div class="de-showcase">
-            <div class="de-image-box hover-shadow" style="width:100%">
-              <img src="./static/images/figure14_pipeline_error.png" alt="Architecture Diagram">
+            <div class="de-video-box hover-shadow">
+              <video controls loop muted playsinline style="width:100%; height:100%; object-fit:cover;">
+                <source src="./videos/de-evol.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="de-image-box hover-shadow">
+              <img src="./images/de-evol.png" alt="Evolution Pipeline" style="max-height: 400px;">
             </div>
           </div>
         </div>
@@ -546,6 +613,8 @@
   </div>
 </section>
 
+
+
 <section class="section hero is-light" id="leaderboard">
   <div class="container is-wide animate-box">
     <h2 class="title is-3 has-text-centered">🏆 Leaderboard</h2>
@@ -585,18 +654,22 @@
             </tr>
           </thead>
           <tbody class="content-en">
-            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">66.44</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-2">2</span></td><td><b>o3</b></td><td>OpenHands</td><td class="has-text-centered score-col">64.55</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-3">3</span></td><td>Claude-4-Sonnet</td><td>OpenHands</td><td class="has-text-centered score-col">63.70</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
-            <tr><td>4</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">58.05</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
-            <tr><td>5</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">55.82</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>DE-Agent</td><td class="has-text-centered score-col">63.93</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>DeepSeek-V3.1</b></td><td>DE-Agent</td><td class="has-text-centered score-col">52.66</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Gemini-2.5-Pro</td><td>DE-Agent</td><td class="has-text-centered score-col">51.96</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>4</td><td>Qwen3-Coder</td><td>DE-Agent</td><td class="has-text-centered score-col">51.43</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>5</td><td>Qwen3-235B-A22B</td><td>DE-Agent</td><td class="has-text-centered score-col">50.73</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>6</td><td>o3</td><td>DE-Agent</td><td class="has-text-centered score-col">48.32</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>7</td><td>Qwen3-8B</td><td>DE-Agent</td><td class="has-text-centered score-col">45.12</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
           </tbody>
           <tbody class="content-zh" style="display:none;">
-            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">61.44</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-2">2</span></td><td><b>o3</b></td><td>OpenHands</td><td class="has-text-centered score-col">54.77</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-3">3</span></td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">53.54</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
-            <tr><td>4</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">52.07</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
-            <tr><td>5</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">51.22</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>DE-Agent</td><td class="has-text-centered score-col">63.60</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>DeepSeek-V3.1</b></td><td>DE-Agent</td><td class="has-text-centered score-col">53.08</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Gemini-2.5-Pro</td><td>DE-Agent</td><td class="has-text-centered score-col">51.90</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>4</td><td>Qwen3-Coder</td><td>DE-Agent</td><td class="has-text-centered score-col">51.11</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>5</td><td>Qwen3-235B-A22B</td><td>DE-Agent</td><td class="has-text-centered score-col">50.61</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>6</td><td>o3</td><td>DE-Agent</td><td class="has-text-centered score-col">48.02</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>7</td><td>Qwen3-8B</td><td>DE-Agent</td><td class="has-text-centered score-col">46.22</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -607,23 +680,27 @@
             <tr>
               <th width="5%">Rank</th><th>Model</th><th>Framework</th>
               <th class="has-text-centered score-col" style="background:#e3f2fd;">CFS Score</th>
-              <th class="has-text-centered">Success Rate (SR)</th>
+              <th class="has-text-centered">CS Score</th>
               <th>Type</th>
             </tr>
           </thead>
           <tbody class="content-en">
-            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">51.38</td><td class="has-text-centered">22.22%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-2">2</span></td><td><b>Qwen3-Coder</b></td><td>OpenHands</td><td class="has-text-centered score-col">50.66</td><td class="has-text-centered">5.56%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
-            <tr><td><span class="rank-3">3</span></td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">50.17</td><td class="has-text-centered">38.89%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
-            <tr><td>4</td><td>Claude-4-Sonnet</td><td>OpenHands</td><td class="has-text-centered score-col">48.02</td><td class="has-text-centered">19.44%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
-            <tr><td>5</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">41.85</td><td class="has-text-centered">11.11%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>DE-Agent</td><td class="has-text-centered score-col">30.79</td><td class="has-text-centered">61.98</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>Gemini-2.5-Pro</b></td><td>DE-Agent</td><td class="has-text-centered score-col">27.66</td><td class="has-text-centered">55.32</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Qwen3-Coder</td><td>DE-Agent</td><td class="has-text-centered score-col">23.64</td><td class="has-text-centered">54.21</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>4</td><td>DeepSeek-V3.1</td><td>DE-Agent</td><td class="has-text-centered score-col">22.33</td><td class="has-text-centered">50.04</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>5</td><td>o3</td><td>DE-Agent</td><td class="has-text-centered score-col">15.07</td><td class="has-text-centered">35.55</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>6</td><td>Qwen3-235B-A22B</td><td>DE-Agent</td><td class="has-text-centered score-col">2.43</td><td class="has-text-centered">20.15</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>7</td><td>Qwen3-8B</td><td>DE-Agent</td><td class="has-text-centered score-col">1.31</td><td class="has-text-centered">15.33</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
           </tbody>
           <tbody class="content-zh" style="display:none;">
-            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">33.74</td><td class="has-text-centered">--</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-2">2</span></td><td><b>Qwen3-Coder</b></td><td>OpenHands</td><td class="has-text-centered score-col">26.24</td><td class="has-text-centered">--</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
-            <tr><td><span class="rank-3">3</span></td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">14.31</td><td class="has-text-centered">--</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
-            <tr><td>4</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">9.68</td><td class="has-text-centered">--</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
-            <tr><td>5</td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">3.97</td><td class="has-text-centered">--</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>DE-Agent</td><td class="has-text-centered score-col">30.49</td><td class="has-text-centered">61.85</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>Gemini-2.5-Pro</b></td><td>DE-Agent</td><td class="has-text-centered score-col">26.98</td><td class="has-text-centered">55.18</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Qwen3-Coder</td><td>DE-Agent</td><td class="has-text-centered score-col">23.23</td><td class="has-text-centered">54.59</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>4</td><td>DeepSeek-V3.1</td><td>DE-Agent</td><td class="has-text-centered score-col">22.62</td><td class="has-text-centered">50.22</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>5</td><td>o3</td><td>DE-Agent</td><td class="has-text-centered score-col">15.00</td><td class="has-text-centered">35.10</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>6</td><td>Qwen3-235B-A22B</td><td>DE-Agent</td><td class="has-text-centered score-col">2.31</td><td class="has-text-centered">20.03</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>7</td><td>Qwen3-8B</td><td>DE-Agent</td><td class="has-text-centered score-col">1.21</td><td class="has-text-centered">15.78</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -639,18 +716,22 @@
             </tr>
           </thead>
           <tbody class="content-en">
-            <tr><td><span class="rank-1">1</span></td><td><b>o3</b></td><td>OpenHands</td><td class="has-text-centered score-col">30.78</td><td class="has-text-centered">13.16%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-2">2</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">28.87</td><td class="has-text-centered">14.47%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-3">3</span></td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">28.65</td><td class="has-text-centered">6.25%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
-            <tr><td>4</td><td>Claude-4-Sonnet</td><td>OpenHands</td><td class="has-text-centered score-col">28.34</td><td class="has-text-centered">11.84%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
-            <tr><td>5</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">26.67</td><td class="has-text-centered">9.21%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>DE-Agent</td><td class="has-text-centered score-col">38.75</td><td class="has-text-centered">20.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>Qwen3-Coder</b></td><td>DE-Agent</td><td class="has-text-centered score-col">27.12</td><td class="has-text-centered">12.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>o3</td><td>DE-Agent</td><td class="has-text-centered score-col">24.42</td><td class="has-text-centered">6.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>4</td><td>DeepSeek-V3.1</td><td>DE-Agent</td><td class="has-text-centered score-col">24.11</td><td class="has-text-centered">10.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>5</td><td>Gemini-2.5-Pro</td><td>DE-Agent</td><td class="has-text-centered score-col">23.97</td><td class="has-text-centered">8.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>6</td><td>Qwen3-8B</td><td>DE-Agent</td><td class="has-text-centered score-col">15.89</td><td class="has-text-centered">2.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>7</td><td>Qwen3-235B-A22B</td><td>DE-Agent</td><td class="has-text-centered score-col">12.43</td><td class="has-text-centered">2.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
           </tbody>
           <tbody class="content-zh" style="display:none;">
-            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">36.77</td><td class="has-text-centered">20.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-2">2</span></td><td><b>Qwen3-Coder</b></td><td>OpenHands</td><td class="has-text-centered score-col">25.89</td><td class="has-text-centered">12.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
-            <tr><td><span class="rank-3">3</span></td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">23.81</td><td class="has-text-centered">4.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
-            <tr><td>4</td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">23.14</td><td class="has-text-centered">6.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
-            <tr><td>5</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">22.32</td><td class="has-text-centered">8.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>DE-Agent</td><td class="has-text-centered score-col">37.88</td><td class="has-text-centered">20.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>Qwen3-Coder</b></td><td>DE-Agent</td><td class="has-text-centered score-col">26.59</td><td class="has-text-centered">12.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>DeepSeek-V3.1</td><td>DE-Agent</td><td class="has-text-centered score-col">24.69</td><td class="has-text-centered">8.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>4</td><td>Gemini-2.5-Pro</td><td>DE-Agent</td><td class="has-text-centered score-col">24.28</td><td class="has-text-centered">8.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>5</td><td>o3</td><td>DE-Agent</td><td class="has-text-centered score-col">24.23</td><td class="has-text-centered">6.00%</td><td><span class="tag is-dark is-light tag-model-type">Proprietary</span></td></tr>
+            <tr><td>6</td><td>Qwen3-8B</td><td>DE-Agent</td><td class="has-text-centered score-col">15.19</td><td class="has-text-centered">0.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
+            <tr><td>7</td><td>Qwen3-235B-A22B</td><td>DE-Agent</td><td class="has-text-centered score-col">13.01</td><td class="has-text-centered">0.00%</td><td><span class="tag is-info is-light tag-model-type">Open</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -659,30 +740,48 @@
         <table class="table is-fullwidth is-hoverable">
           <thead>
             <tr>
-              <th width="5%">Rank</th>
-              <th>Model</th>
-              <th>Framework</th>
+              <th width="5%">Rank</th><th>Model</th><th>Framework</th>
               <th class="has-text-centered score-col" style="background:#e8f5e9;">📊 DA Score</th>
               <th>Type</th>
             </tr>
           </thead>
           <tbody class="content-en">
-            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">52.06</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-2">2</span></td><td><b>Claude-4-Sonnet</b></td><td>OpenHands</td><td class="has-text-centered score-col">51.33</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-3">3</span></td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">48.78</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
-            <tr><td>4</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">45.79</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
-            <tr><td>5</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">41.88</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>DA-Agent</td><td class="has-text-centered score-col">50.84</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">46.99</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Kimi-K2</td><td>DA-Agent</td><td class="has-text-centered score-col">41.89</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>4</td><td>Gemini-2.5-Pro</td><td>DA-Agent</td><td class="has-text-centered score-col">34.70</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>5</td><td>DeepSeek-V3.1</td><td>DA-Agent</td><td class="has-text-centered score-col">34.33</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>6</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">33.87</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>7</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">33.38</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>8</td><td>o3</td><td>DA-Agent</td><td class="has-text-centered score-col">28.20</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>9</td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">26.57</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>10</td><td>Qwen3-Coder</td><td>DA-Agent</td><td class="has-text-centered score-col">25.13</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>11</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">24.28</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>12</td><td>Doubao-Seed-1.6</td><td>DA-Agent</td><td class="has-text-centered score-col">20.74</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>13</td><td>Qwen3-235B-A22B</td><td>DA-Agent</td><td class="has-text-centered score-col">13.25</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>14</td><td>Qwen3-235B-A22B</td><td>OpenHands</td><td class="has-text-centered score-col">12.43</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>15</td><td>Qwen3-8B</td><td>DA-Agent</td><td class="has-text-centered score-col">4.47</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
           </tbody>
           <tbody class="content-zh" style="display:none;">
-            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">44.25</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-2">2</span></td><td><b>o3</b></td><td>OpenHands</td><td class="has-text-centered score-col">40.11</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
-            <tr><td><span class="rank-3">3</span></td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">32.13</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
-            <tr><td>4</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">30.01</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
-            <tr><td>5</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">28.38</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td><span class="rank-1">1</span></td><td><b>GPT-5</b></td><td>DA-Agent</td><td class="has-text-centered score-col">49.49</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-2">2</span></td><td><b>GPT-5</b></td><td>OpenHands</td><td class="has-text-centered score-col">43.69</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td><span class="rank-3">3</span></td><td>Gemini-2.5-Pro</td><td>DA-Agent</td><td class="has-text-centered score-col">33.75</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>4</td><td>Gemini-2.5-Pro</td><td>OpenHands</td><td class="has-text-centered score-col">31.22</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>5</td><td>Kimi-K2</td><td>DA-Agent</td><td class="has-text-centered score-col">31.22</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>6</td><td>o3</td><td>DA-Agent</td><td class="has-text-centered score-col">28.70</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>7</td><td>o3</td><td>OpenHands</td><td class="has-text-centered score-col">27.87</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>8</td><td>DeepSeek-V3.1</td><td>DA-Agent</td><td class="has-text-centered score-col">27.75</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>9</td><td>DeepSeek-V3.1</td><td>OpenHands</td><td class="has-text-centered score-col">24.16</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>10</td><td>Qwen3-Coder</td><td>DA-Agent</td><td class="has-text-centered score-col">22.64</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>11</td><td>Qwen3-Coder</td><td>OpenHands</td><td class="has-text-centered score-col">21.84</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>12</td><td>Doubao-Seed-1.6</td><td>DA-Agent</td><td class="has-text-centered score-col">17.83</td><td><span class="tag is-dark is-light is-rounded tag-model-type">Proprietary</span></td></tr>
+            <tr><td>13</td><td>Qwen3-235B-A22B</td><td>DA-Agent</td><td class="has-text-centered score-col">12.74</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>14</td><td>Qwen3-235B-A22B</td><td>OpenHands</td><td class="has-text-centered score-col">11.50</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
+            <tr><td>15</td><td>Qwen3-8B</td><td>DA-Agent</td><td class="has-text-centered score-col">6.33</td><td><span class="tag is-info is-light is-rounded tag-model-type">Open</span></td></tr>
           </tbody>
         </table>
         <p class="help has-text-centered" style="margin-top: 10px; color: #888;">
-          * [cite_start]DA Score is an aggregate metric assessing Accuracy, Insightfulness, and Completeness [cite: 108-109].
+          * DA Score is the aggregate of Completeness, Accuracy, Insightfulness, Readability, Analytical Depth, and Visualization scores.
         </p>
       </div>
 
@@ -690,7 +789,7 @@
   </div>
 </section>
 
-<section class="section" id="analysis">
+<!-- <section class="section" id="analysis">
   <div class="container is-max-desktop animate-box">
     <h2 class="title is-3 has-text-centered">Deep Dive Analysis</h2>
     <div class="columns is-vcentered">
@@ -707,13 +806,12 @@
       </div>
       <div class="column is-6">
         <div class="vis-card hover-shadow">
-          <img src="./static/images/average_error_sunburst_final_corrected.pdf" alt="Error Analysis Sunburst" style="width: 100%;">
-          <p class="vis-caption">Fig 2. Average error distribution across 6 models on DE-Impl tasks.</p>
+          <img src="./images/error_analysis.png" alt="Error Analysis Sunburst" style="width: 80%;">
         </div>
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content animate-box">
